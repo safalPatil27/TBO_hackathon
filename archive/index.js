@@ -48,4 +48,64 @@ const importData = async () => {
   }
 };
 
-importData();
+const updateTypeField = async () => {
+  try {
+    // Iterate through categoryMapping
+    for (const [newType, existingTypes] of Object.entries(categoryMapping)) {
+      // Update all documents where the type matches any existing type in the category
+      const result = await TouristPlace.updateMany(
+        { type: { $in: existingTypes } },
+        { $set: { type: newType } }
+      );
+      console.log(
+        `Updated ${result.modifiedCount} documents to type: ${newType}`
+      );
+    }
+    console.log("Type field update completed!");
+  } catch (error) {
+    console.error("Error updating type field:", error);
+  } finally {
+    mongoose.connection.close(); // Close the connection after the updates
+  }
+};
+
+const categoryMapping = {
+  Temples: [
+    "Church", "Gurudwara", "Mosque", "Religious Complex", "Religious Shrine", 
+    "Religious Site", "Shrine", "Temple", "Temples", "Spiritual Center", "Gurudwara", "Shrine", "Spiritual Center", "Church", "Mosque", "Temple", "Religious Complex", "Religious Shrine", "Religious Site"
+  ],
+  Lakes: [
+    "Lake",
+  ],
+  Beaches: [
+    "Beach", "Promenade", "Scenic Area", "River Island"
+  ],
+  NationalParks: [
+    "National Park", "Bird Sanctuary", "Wildlife Sanctuary", "Botanical Garden", "Zoo","Park", "Botanical Garden"
+  ],
+  Forts: [
+    "Fort", "Palace", "Historical", "Monument", "War Memorial", "Prehistoric Site", "Fort", "Palace", "Memorial", "Monument", "Mausoleum", "Tomb", "Tombs"
+  ],
+  AdventureSports: [
+    "Adventure Sport", "Ski Resort", "Trekking"
+  ],
+  Amusement: [
+    "Amusement Park", "Theme Park", "Film Studio", "Entertainment","Race Track"
+  ],
+  Nature: [
+    "Aquarium", "Dam", "Cave", "Hill", "Mountain Peak", "Valley", "Waterfall", "Zoo", "Orchard", "Tea Plantation"
+  ],
+  Cultural: [
+    "Cultural", "Cricket Ground", "Government Building", "Museum", "Observatory", "Rock Carvings", "Sculpture Garden", "Science", "Landmark", "Site", "Tomb", "Tombs", "Monastery", "Mausoleum", "Monument", "War Memorial"
+  ],
+  UrbanDevelopment: [
+    "Commercial Complex", "Mall", "Market", "Township", "Urban Development Project", "Suspension Bridge", "Border Crossing"
+  ],
+  Scenic: [
+    "Bridge", "Confluence", "Ghat", "Gravity Hill", "Island", "Landmark", "Promenade", "Scenic Point", "Sunrise Point", "Viewpoint", "Stepwell"
+  ],
+ 
+};
+
+updateTypeField();
+

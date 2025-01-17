@@ -18,9 +18,10 @@ app.use(cookieParser());
 
 
 import userrouter from "./routes/user.routes.js";
+import itineraryrouter from "./routes/itinerary.routes.js";
 
 app.use("/api/v1/user", userrouter);
-app.use("/api/v1/itinerary", userrouter);
+app.use("/api/v1/itinerary", itineraryrouter);
 
 
 

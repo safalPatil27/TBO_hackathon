@@ -1,0 +1,222 @@
+Sentence,Temples,Lakes,Beaches,NationalParks,Forts,AdventureSports,Amusement,Nature,Cultural,UrbanDevelopment,Scenic
+Visit the ancient temple nestled in the mountains.,1,0,0,0,0,0,0,0.2,0.8,0,0.2
+Relax on the pristine beach with stunning ocean views.,0,0,1,0,0,0,0,0.2,0,0,0.8
+Explore the diverse wildlife at the national park.,0,0,0,1,0,0,0,0.8,0.2,0,0
+Discover the history of the majestic fort overlooking the city.,0,0,0,0,1,0,0,0,0.8,0,0
+Experience the thrill of white-water rafting in the scenic valley.,0,0,0,0,0,1,0,0.8,0,0,0.2
+Enjoy a thrilling roller coaster ride at the amusement park.,0,0,0,0,0,0,1,0,0,0,0
+Hike through the lush forests and admire the cascading waterfall.,0,0,0,0,0,0,0,1,0,0,0.2
+Explore the fascinating exhibits at the renowned museum.,0,0,0,0,0,0,0,0,1,0,0
+Shop for souvenirs at the bustling market in the city center.,0,0,0,0,0,0,0,0,0,1,0
+Admire the breathtaking views from the scenic viewpoint.,0,0,0,0,0,0,0,0.2,0,0,1
+Cross the iconic suspension bridge connecting the two cities.,0,0,0,0,0,0,0,0,0,1,0
+Visit the serene lake and enjoy a peaceful boat ride.,0,1,0,0,0,0,0,0.2,0,0,0.2
+Spend a day at the zoo and observe the diverse animal species.,0,0,0,1,0,0,0,0.8,0,0,0
+Discover the ancient rock carvings at the archaeological site.,0,0,0,0,0,0,0,0,1,0,0
+Relax on the promenade and enjoy the ocean breeze.,0,0,1,0,0,0,0,0.2,0,0,0.8
+Hike to the summit of the mountain peak for panoramic views.,0,0,0,0,0,0,0,1,0,0,0.2
+Visit the botanical garden and admire the vibrant flowers.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the underwater world at the aquarium.,0,0,0,0,0,0,0,1,0,0,0
+Learn about the history of the region at the local museum.,0,0,0,0,0,0,0,0,1,0,0
+Enjoy a picnic at the scenic park with lush green lawns.,0,0,0,1,0,0,0,0.8,0,0,0
+Visit the ancient temple complex and experience its spiritual significance.,1,0,0,0,0,0,0,0,0.8,0,0
+Relax on the beach and enjoy the warm sunshine.,0,0,1,0,0,0,0,0.2,0,0,0.8
+Hike through the national park and spot diverse wildlife.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the historical fort and learn about its past.,0,0,0,0,1,0,0,0,0.8,0,0
+Experience the thrill of paragliding in the scenic mountains.,0,0,0,0,0,1,0,0.8,0,0,0.2
+Enjoy a thrilling roller coaster ride at the amusement park.,0,0,0,0,0,1,0,0,0,0,0
+Visit the zoo and observe the playful antics of the animals.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the ancient caves and discover hidden wonders.,0,0,0,0,0,0,0,1,0,0,0
+Admire the intricate carvings on the ancient temple walls.,1,0,0,0,0,0,0,0,0.8,0,0
+Learn about the history of the region at the local museum.,0,0,0,0,0,0,0,0,1,0,0
+Enjoy a leisurely stroll along the promenade overlooking the lake.,0,1,0,0,0,0,0,0.2,0,0,0.8
+Visit the botanical garden and admire the diverse plant life.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the ancient ruins and uncover the mysteries of the past.,0,0,0,0,0,0,0,0,1,0,0
+Experience the thrill of white-water rafting in the scenic river.,0,0,0,0,0,1,0,0.8,0,0,0.2
+Enjoy a thrilling roller coaster ride at the amusement park.,0,0,0,0,0,1,0,0,0,0,0
+Visit the zoo and observe the playful antics of the animals.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the ancient caves and discover hidden wonders.,0,0,0,0,0,0,0,1,0,0,0
+Admire the intricate carvings on the ancient temple walls.,1,0,0,0,0,0,0,0,0.8,0,0
+Learn about the history of the region at the local museum.,0,0,0,0,0,0,0,0,1,0,0
+Enjoy a leisurely stroll along the promenade overlooking the lake.,0,1,0,0,0,0,0,0.2,0,0,0.8
+Visit the botanical garden and admire the diverse plant life.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the ancient ruins and uncover the mysteries of the past.,0,0,0,0,0,0,0,0,1,0,0
+Experience the thrill of white-water rafting in the scenic river.,0,0,0,0,0,1,0,0.8,0,0,0.2
+Enjoy a thrilling roller coaster ride at the amusement park.,0,0,0,0,0,1,0,0,0,0,0
+Visit the zoo and observe the playful antics of the animals.,0,0,0,1,0,0,0,0.8,0,0,0
+Explore the ancient caves and discover hidden wonders.,0,0,0,0,0,0,0,1,0,0,0
+Admire the intricate carvings on the ancient temple walls.,1,0,0,0,0,0,0,0,0.8,0,0
+Learn about the history of the region at the local museum.,0,0,0,0,0,0,0,0,1,0,0
+Enjoy a leisurely stroll along the promenade overlooking the lake.,0,1,0,0,0,0,0,0.2,0,0,0.8
+Visit the botanical garden and admire the diverse plant life.,0,0,0,1,0,0,0,0.8,0,0,0
+"I love spending time in nature, hiking, and camping.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy exploring nature, hiking trails, and scenic views.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.8
+"I am fascinated by nature, wildlife, and the environment.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy connecting with nature, hiking, and outdoor activities.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am drawn to nature, natural beauty, and peaceful surroundings.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy observing nature, wildlife, and the natural world.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am interested in nature conservation, environmental protection, and sustainable practices.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I appreciate the beauty and diversity of nature, natural landscapes, and ecosystems.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am fascinated by the wonders of nature, natural phenomena, and scientific discoveries.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy exploring nature, natural parks, and national forests.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am interested in marine life, oceanography, and marine biology.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I love the ocean, beaches, and coastal landscapes.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8
+"I am fascinated by marine animals, coral reefs, and underwater ecosystems.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy water sports, swimming, and snorkeling.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am drawn to the ocean, its vastness, and its power.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy gardening, growing plants, and connecting with nature in my own backyard.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am interested in botany, plant life, and the diversity of plant species.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy exploring forests, jungles, and other natural habitats.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am fascinated by the interdependence of all living things in nature, the delicate balance of ecosystems.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy observing the changing seasons, the beauty of spring flowers, the vibrant colors of autumn leaves.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am fascinated by history, historical events, and historical figures.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy learning about history, historical periods, and historical cultures.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in history, historical research, and historical interpretation.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I appreciate the importance of history, historical understanding, and historical preservation.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am drawn to history, historical documents, and historical artifacts.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy studying history, historical timelines, and historical maps.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in history, historical debates, and historical perspectives.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I appreciate the lessons and insights that history provides, historical context, and historical significance.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am fascinated by the stories and narratives of history, historical accounts, and historical fiction.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy exploring history, historical museums, and historical sites.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in ancient history, classical civilizations, and the history of the world.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy learning about different cultures, their history, and their traditions.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am fascinated by historical figures, their accomplishments, and their impact on the world.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I love spending time in nature, hiking, and camping.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy exploring nature, hiking trails, and scenic views.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.8
+"I am fascinated by nature, wildlife, and the environment.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy connecting with nature, hiking, and outdoor activities.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am drawn to nature, natural beauty, and peaceful surroundings.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy observing nature, wildlife, and the natural world.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am interested in nature conservation, environmental protection, and sustainable practices.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I appreciate the beauty and diversity of nature, natural landscapes, and ecosystems.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am fascinated by the wonders of nature, natural phenomena, and scientific discoveries.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I enjoy exploring nature, natural parks, and national forests.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I am interested in marine life, oceanography, and marine biology.",0.2,0.2,0.2,0.8,0.2,0.2,0.2,0.8,0.2,0.2,0.2
+"I love the ocean, beaches, and coastal landscapes.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8
+"I am fascinated by marine animals, coral reefs, and underwater ecosystems.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy water sports, swimming, and snorkeling.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am drawn to the ocean, its vastness, and its power.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy gardening, growing plants, and connecting with nature in my own backyard.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am interested in botany, plant life, and the diversity of plant species.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy exploring forests, jungles, and other natural habitats.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am fascinated by the interdependence of all living things in nature, the delicate balance of ecosystems.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I enjoy observing the changing seasons, the beauty of spring flowers, the vibrant colors of autumn leaves.",0.2,0.2,0.8,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+"I am fascinated by history, historical events, and historical figures.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy learning about history, historical periods, and historical cultures.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in history, historical research, and historical interpretation.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I appreciate the importance of history, historical understanding, and historical preservation.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am drawn to history, historical documents, and historical artifacts.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy studying history, historical timelines, and historical maps.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in history, historical debates, and historical perspectives.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I appreciate the lessons and insights that history provides, historical context, and historical significance.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am fascinated by the stories and narratives of history, historical accounts, and historical fiction.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy exploring history, historical museums, and historical sites.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am interested in ancient history, classical civilizations, and the history of the world.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy learning about different cultures, their history, and their traditions.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I am fascinated by historical figures, their accomplishments, and their impact on the world.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy studying historical events, their causes, and their consequences.",0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.8,0.2
+"I enjoy hiking through scenic national parks, visiting ancient temples, and spending the day at beautiful lakes while taking in the peaceful natural surroundings.",0.4,0.5,0.2,0.8,0.2,0.3,0.2,0.9,0.6,0.4,0.8
+"I love the thrill of adventure sports by the beach, followed by a visit to a nearby cultural landmark or historic fort to explore the area's rich heritage.",0.3,0.3,0.6,0.6,0.7,0.8,0.7,0.7,0.5,0.6,0.9
+"Exploring caves, trekking through mountains, and taking in the breathtaking views from a scenic viewpoint are some of my favorite activities, along with a stop at a local temple to learn about the area's culture.",0.4,0.2,0.3,0.7,0.6,0.9,0.4,0.8,0.7,0.7,0.8
+"On weekends, I enjoy visiting botanical gardens, engaging in water sports on serene beaches, and then touring a museum or historical monument to immerse myself in the local culture.",0.2,0.4,0.7,0.5,0.3,0.5,0.6,0.8,0.8,0.8,0.9
+"During my travels, I prioritize spending time in nature reserves, enjoying the calm of lakes and rivers, followed by exploring temples and monuments to understand the culture of the region.",0.5,0.8,0.3,0.8,0.3,0.3,0.2,0.9,0.7,0.6,0.7
+"I love hiking on mountain trails, experiencing the tranquility of wildlife sanctuaries, and ending the day with a peaceful sunset at a scenic point, followed by a visit to a historical site or religious shrine.",0.4,0.2,0.4,0.7,0.5,0.6,0.3,0.9,0.6,0.7,0.8
+"Combining a visit to a local amusement park with a trip to a national park, where I can enjoy nature while observing wildlife, is my perfect way to spend the weekend.",0.2,0.4,0.5,0.9,0.3,0.6,0.7,0.8,0.9,0.7,0.6
+"Visiting ancient temples nestled in the hills, followed by a scenic walk through a national park, gives me a perfect mix of cultural exploration and natural beauty.",0.8,0.3,0.3,0.8,0.4,0.2,0.3,0.9,0.8,0.9,0.7
+"I am fascinated by the history of fortresses and ruins, and love exploring them while engaging in water sports and enjoying the beauty of lakes and nearby scenic spots.",0.6,0.4,0.5,0.6,0.9,0.8,0.7,0.7,0.5,0.5,0.8
+"Visiting a zoo or wildlife sanctuary, enjoying a peaceful boat ride on a lake, and then relaxing on a scenic beach is my ideal way to spend a day outdoors.",0.2,0.7,0.8,0.5,0.2,0.3,0.4,0.9,0.6,0.5,0.9
+"I enjoy exploring historical forts, followed by an afternoon hike in the national park to experience the stunning scenery and then unwinding at a nearby amusement park.",0.7,0.3,0.3,0.8,0.9,0.8,0.6,0.7,0.6,0.7,0.8
+"I love visiting cultural sites like museums and ancient temples, followed by a scenic hike in the mountains and a peaceful picnic near a serene lake.",0.8,0.3,0.3,0.8,0.3,0.2,0.2,0.9,0.8,0.7,0.8
+"I am always excited to visit nature reserves, go for a swim at the beach, and then take a guided tour of a cultural monument or heritage site.",0.3,0.4,0.8,0.6,0.4,0.3,0.5,0.9,0.7,0.8,0.8
+"While on vacation, I enjoy visiting ancient monasteries, indulging in scenic hikes, and relaxing on the beach, all while learning about the culture and history of the area.",0.6,0.3,0.7,0.6,0.3,0.5,0.4,0.9,0.8,0.7,0.8
+"My ideal trip includes exploring forts, engaging in outdoor adventure sports like paragliding, and taking in the serene beauty of lakes and national parks.",0.7,0.4,0.3,0.9,0.8,0.8,0.9,0.7,0.6,0.5,0.9
+"I love visiting temples, then going for a scenic walk through the forest, and finally relaxing by the lake, where I can reflect on the beauty of nature.",0.8,0.6,0.2,0.6,0.3,0.2,0.3,0.9,0.7,0.6,0.7
+"Exploring a national park, climbing a mountain peak, and then spending the afternoon at a wildlife sanctuary is my perfect outdoor adventure.",0.4,0.2,0.3,0.9,0.2,0.7,0.6,0.9,0.6,0.5,0.9
+"I love spending time in nature, whether it's hiking in the mountains, exploring a temple, or simply sitting by the beach and soaking in the beauty of the landscape.",0.5,0.4,0.6,0.7,0.3,0.3,0.2,0.9,0.6,0.6,0.8
+"I am drawn to cultural heritage sites, where I can learn about history and enjoy a scenic hike through the park to reach a stunning viewpoint.",0.8,0.2,0.3,0.7,0.5,0.3,0.3,0.9,0.9,0.7,0.8
+"I love taking weekend trips to explore national parks, temples, and scenic beaches while indulging in adventure sports like rock climbing and zip-lining.",0.6,0.2,0.7,0.9,0.5,0.9,0.8,0.7,0.6,0.7,0.9
+"Visiting a historical fort, followed by a peaceful walk around a serene lake, offers both adventure and a sense of calm, making it the perfect weekend getaway.",0.7,0.6,0.3,0.8,0.9,0.7,0.4,0.8,0.7,0.6,0.9
+"On a trip to the mountains, I explore ancient temples, enjoy a boat ride on crystal-clear lakes, and take a thrilling dip in the nearby beach.",0.8,0.5,0.7,0.6,0.3,0.8,0.6,0.9,0.8,0.7,0.7
+"Spending the day in an amusement park, followed by a visit to a peaceful cultural landmark and a tranquil lakeside sunset, combines adventure and relaxation.",0.2,0.8,0.7,0.4,0.3,0.9,0.8,0.8,0.9,0.6,0.8
+"I love hiking in the national park, exploring a temple tucked away in the mountains, and ending the day with a relaxing stroll on a quiet beach.",0.6,0.3,0.6,0.9,0.5,0.7,0.3,0.9,0.8,0.7,0.8
+"Exploring ancient forts, kayaking on a peaceful lake, and enjoying a quiet walk in the forest make for the perfect blend of nature, culture, and adventure.",0.7,0.8,0.4,0.7,0.9,0.8,0.6,0.9,0.8,0.6,0.9
+"From the hustle of city life to the peace of temples and nature reserves, I find joy in balancing urban exploration with visits to cultural and natural landmarks.",0.8,0.2,0.3,0.7,0.5,0.4,0.3,0.9,0.9,0.8,0.7
+"Adventure sports by the beach, followed by a hike through a national park, and ending with a relaxing visit to an ancient temple, give me the perfect mix of activities.",0.3,0.4,0.8,0.9,0.6,0.9,0.7,0.8,0.7,0.7,0.8
+"Nature lovers like me appreciate the quiet beauty of lakes, the rich history of forts, and the thrill of adventure sports, all within reach of cultural sites.",0.5,0.7,0.5,0.8,0.8,0.7,0.4,0.9,0.7,0.6,0.9
+"Camping under the stars in a national park, visiting cultural temples, and spending the day on a scenic beach, offer the ultimate escape into nature and history.",0.6,0.8,0.7,0.9,0.3,0.6,0.5,0.9,0.8,0.6,0.9
+"After an adrenaline-pumping day of adventure sports, I enjoy the quiet beauty of a lake and reflect on the historical significance of nearby cultural landmarks.",0.3,0.8,0.4,0.7,0.5,0.9,0.6,0.9,0.8,0.7,0.8
+"On my travels, I love to start with a morning hike through a scenic national park, then explore ancient temples and finish the day with a peaceful boat ride on a lake.",0.7,0.9,0.3,0.9,0.3,0.6,0.2,0.9,0.9,0.7,0.9
+"The thrill of adventure sports by the beach, combined with cultural exploration at nearby temples and a peaceful walk through a nature reserve, is the perfect way to recharge.",0.4,0.5,0.8,0.6,0.6,0.9,0.7,0.9,0.7,0.7,0.9
+"Exploring hidden temples deep in the forest, kayaking on a calm lake, and then visiting a local fort to learn about the area's history provides a perfect mix of adventure and culture.",0.8,0.8,0.3,0.7,0.9,0.9,0.5,0.9,0.8,0.6,0.9
+"From climbing the ancient walls of a fort to relaxing on the beach, and ending with a hike to a nearby temple, my favorite trips combine adventure, history, and nature.",0.8,0.3,0.7,0.8,0.9,0.8,0.6,0.9,0.8,0.7,0.9
+"Visiting historical landmarks, exploring natural reserves, and enjoying the thrill of water sports on a beach are how I combine relaxation, adventure, and culture.",0.6,0.5,0.9,0.6,0.7,0.8,0.6,0.8,0.9,0.7,0.9
+"A weekend trip that includes a visit to a scenic temple, a nature hike, and adventure sports by the beach is my idea of the perfect balance of cultural and outdoor fun.",0.7,0.4,0.7,0.8,0.5,0.9,0.8,0.9,0.8,0.7,0.8
+"I love exploring the dense forests of a national park, visiting a nearby temple to learn about local culture, and relaxing at a scenic beach for the perfect vacation.",0.8,0.5,0.6,0.9,0.4,0.7,0.2,0.9,0.8,0.8,0.9
+"A perfect day for me includes hiking in a national park, visiting a temple for some cultural insight, and ending the day with a sunset view from the beach.",0.6,0.6,0.7,0.9,0.5,0.3,0.4,0.9,0.9,0.7,0.8
+"Combining the serenity of lakes, the beauty of beaches, and the thrill of visiting forts and temples offers a complete travel experience for the mind and body.",0.7,0.8,0.7,0.6,0.9,0.5,0.4,0.9,0.8,0.7,0.9
+"Adventure sports by the beach, a historical tour of a fort, and a relaxing visit to a cultural temple are my favorite ways to experience both thrill and peace.",0.4,0.5,0.9,0.6,0.9,0.9,0.8,0.9,0.8,0.6,0.9
+"Taking a morning stroll through ancient temples, followed by an afternoon at a scenic beach, provides the perfect balance of peace and adventure.",0.8,0.7,0.9,0.6,0.3,0.6,0.4,0.9,0.8,0.7,0.9
+"A day spent hiking through national parks, followed by a visit to a historical fort and a relaxing boat ride on a tranquil lake, is my ideal vacation.",0.9,0.8,0.5,0.9,0.8,0.7,0.5,0.9,0.9,0.8,0.8
+"From the adrenaline rush of adventure sports to the peaceful serenity of lakes and cultural exploration at temples, this trip has it all.",0.7,0.9,0.6,0.7,0.6,0.9,0.5,0.8,0.9,0.7,0.9
+Spending the day at an amusement park and finishing with a sunset by the lake and a visit to a historic fort combines all my favorite activities.,0.3,0.9,0.7,0.6,0.8,0.7,0.8,0.9,0.8,0.7,0.9
+"A boat ride on a serene lake, a visit to a peaceful temple, and a thrilling hike through national parks provide an unforgettable blend of nature and adventure.",0.8,0.9,0.4,0.8,0.5,0.8,0.3,0.9,0.9,0.6,0.9
+"After visiting a cultural landmark, I love unwinding at a beach, surrounded by nature, and exploring nearby forts for a mix of relaxation and history.",0.6,0.7,0.9,0.5,0.8,0.6,0.4,0.9,0.9,0.7,0.9
+"Camping near a tranquil lake, followed by a visit to an ancient temple and a fun day at an amusement park, offers the perfect combination of nature, culture, and thrill.",0.5,0.9,0.6,0.7,0.8,0.7,0.6,0.9,0.9,0.8,0.9
+"Exploring historic forts, then experiencing the serenity of lakes and temples, gives me a sense of peace and adventure all in one trip.",0.8,0.9,0.5,0.6,0.9,0.6,0.5,0.9,0.8,0.7,0.9
+"An adventurous trek through national parks, followed by an afternoon exploring ancient temples and winding down on a beach, is my perfect day.",0.9,0.7,0.8,0.9,0.4,0.9,0.3,0.9,0.8,0.7,0.9
+"With beaches offering adventure sports and peaceful lakeside temples offering relaxation, I get the best of both worlds on my trip.",0.3,0.8,0.9,0.5,0.4,0.9,0.6,0.9,0.9,0.7,0.9
+"Spending time at an amusement park, visiting a national park, and reflecting at a cultural temple give me a perfect day of thrill and tranquility.",0.2,0.6,0.8,0.8,0.7,0.7,0.9,0.9,0.9,0.8,0.9
+"An ideal vacation for me includes a boat ride on a peaceful lake, exploring temples for cultural enrichment, and a visit to a beach for some sun and adventure.",0.8,0.9,0.7,0.5,0.3,0.6,0.4,0.9,0.9,0.8,0.9
+"Adventure sports at a beach, a hike through national parks, and a visit to cultural temples create the perfect balance of excitement and serenity.",0.4,0.5,0.9,0.8,0.5,0.9,0.7,0.9,0.9,0.7,0.9
+"I love the combination of cultural landmarks, serene lakes, and fun at amusement parks that makes every trip exciting and relaxing at the same time.",0.7,0.9,0.6,0.4,0.5,0.9,0.8,0.9,0.9,0.8,0.9
+"After an adventurous day of hiking in the national park, I enjoy a boat ride on a peaceful lake and a visit to nearby temples for a cultural touch.",0.9,0.8,0.5,0.9,0.7,0.6,0.5,0.9,0.9,0.7,0.9
+"With the excitement of amusement parks, the tranquility of temples, and the beauty of national parks, this trip offers an unforgettable mix of adventure and culture.",0.4,0.7,0.8,0.9,0.6,0.9,0.8,0.9,0.9,0.8,0.9
+"A morning spent exploring the historical forts, followed by a boat ride on a scenic lake, and ending with an adventure at the beach, is my idea of the perfect day.",0.8,0.9,0.8,0.6,0.9,0.7,0.7,0.9,0.9,0.7,0.9
+"The thrill of adventure sports, the peaceful surroundings of temples, and a visit to a nearby cultural landmark create a perfect blend of excitement and tranquility.",0.6,0.4,0.9,0.5,0.8,0.9,0.6,0.9,0.8,0.9,0.9
+"Whether it's exploring ancient temples, relaxing by the lake, or seeking adventure at a national park, I find joy in every aspect of nature and culture.",0.8,0.9,0.6,0.8,0.5,0.9,0.4,0.9,0.9,0.7,0.9
+I enjoy combining the tranquility of lakes and temples with the thrill of adventure sports on the beach and exploring cultural landmarks.,0.7,0.9,0.8,0.6,0.5,0.9,0.6,0.9,0.9,0.7,0.9
+"A perfect day for me is exploring a scenic national park, visiting an ancient temple, and finishing with a fun-filled day at an amusement park.",0.9,0.7,0.4,0.9,0.3,0.9,0.8,0.9,0.9,0.7,0.9
+"An unforgettable trip is one that combines a visit to cultural landmarks, a relaxing boat ride on a lake, and an exhilarating adventure at the beach.",0.8,0.9,0.7,0.4,0.3,0.9,0.5,0.9,0.9,0.8,0.9
+"Whether it's the peace of a cultural temple, the excitement of amusement parks, or the serenity of lakes, I love balancing adventure with relaxation.",0.7,0.8,0.7,0.5,0.7,0.9,0.8,0.9,0.9,0.8,0.9
+"The mix of adventure sports at the beach, cultural exploration at temples, and nature walks in national parks makes every trip exciting and enriching.",0.4,0.5,0.9,0.8,0.6,0.9,0.6,0.9,0.9,0.7,0.9
+"I enjoy spending my days hiking through national parks, learning about cultural landmarks, and relaxing by the lake or beach for the perfect mix of excitement and serenity.",0.9,0.7,0.8,0.9,0.6,0.7,0.3,0.9,0.8,0.8,0.9
+"From the serenity of a lake to the thrill of adventure sports at a beach, and the history of ancient forts, I find joy in every part of nature and culture.",0.6,0.8,0.9,0.5,0.8,0.9,0.7,0.9,0.8,0.8,0.9
+"Exploring hidden temples, hiking through lush national parks, and enjoying beachside adventure sports offers an incredible combination of relaxation and excitement.",0.8,0.7,0.8,0.9,0.6,0.9,0.7,0.9,0.9,0.7,0.9
+"A perfect combination of nature, culture, and thrill can be found in a trip that includes hiking in a national park, visiting a temple, and spending time at the beach.",0.9,0.7,0.7,0.8,0.6,0.9,0.8,0.9,0.9,0.8,0.9
+"Whether I'm hiking through a national park, reflecting at a cultural temple, or relaxing on the beach, every trip offers a unique blend of adventure and peace.",0.9,0.6,0.8,0.9,0.7,0.8,0.4,0.9,0.9,0.7,0.9
+"Exploring ancient forts, followed by a relaxing boat ride on a tranquil lake and some fun at an amusement park, gives me a perfect mix of history, fun, and nature.",0.8,0.9,0.7,0.6,0.9,0.8,0.7,0.9,0.9,0.7,0.9
+"I find joy in exploring scenic national parks, visiting cultural landmarks, and enjoying a variety of adventure sports at the beach.",0.9,0.6,0.9,0.9,0.6,0.9,0.6,0.9,0.9,0.7,0.9
+"A trip that includes visiting temples, enjoying a peaceful boat ride on a lake, and experiencing adventure sports on a beach is my perfect getaway.",0.8,0.9,0.9,0.7,0.5,0.9,0.8,0.9,0.9,0.7,0.9
+"Adventure sports, cultural exploration, and relaxation on the beach, along with a peaceful walk through a nature reserve, make every trip memorable.",0.6,0.5,0.9,0.7,0.7,0.9,0.8,0.9,0.8,0.7,0.9
+"Visiting ancient temples, paddling on serene lakes, and enjoying a day of adventure sports at the beach makes for a thrilling yet peaceful vacation.",0.8,0.9,0.7,0.6,0.5,0.9,0.4,0.9,0.9,0.7,0.9
+"From exploring historic forts and temples to relaxing by the lake and indulging in thrilling adventure sports, this trip has everything I crave.",0.9,0.8,0.5,0.8,0.9,0.7,0.6,0.9,0.8,0.7,0.9
+"After a cultural tour through temples and forts, I unwind by kayaking in the lake, followed by a fun-filled day at an amusement park.",0.8,0.9,0.7,0.6,0.8,0.8,0.7,0.9,0.9,0.8,0.9
+"An ideal trip blends history, nature, and adventure: starting with temples and forts, followed by a lake cruise and an exciting day at the beach.",0.9,0.7,0.8,0.6,0.8,0.7,0.9,0.9,0.9,0.7,0.9
+"Adventure sports at the beach, a serene boat ride on a lake, and a cultural dive into temples and forts bring excitement and tranquility into one vacation.",0.6,0.9,0.8,0.5,0.8,0.9,0.7,0.9,0.9,0.8,0.9
+"Hiking through national parks, followed by an afternoon in cultural temples and a peaceful evening at a lake, is the ideal way to spend a day.",0.9,0.8,0.5,0.9,0.7,0.8,0.4,0.9,0.9,0.7,0.9
+"Exploring a historic fort, enjoying a boat ride on a tranquil lake, and ending with a day of adventure sports on the beach combines history, nature, and thrill.",0.8,0.9,0.9,0.6,0.9,0.9,0.8,0.9,0.9,0.8,0.9
+"Whether it's kayaking on a peaceful lake, hiking through national parks, or exploring ancient temples, I enjoy balancing adventure and tranquility.",0.9,0.9,0.5,0.8,0.8,0.8,0.7,0.9,0.9,0.7,0.9
+"Adventure sports, temple visits, and a quiet boat ride on the lake make for the perfect blend of nature, culture, and excitement.",0.7,0.9,0.8,0.5,0.7,0.9,0.8,0.9,0.9,0.8,0.9
+"Spending a day exploring forts and temples, followed by an adventure sports session at the beach and a peaceful evening on a lake, is my perfect vacation.",0.8,0.8,0.9,0.5,0.8,0.8,0.9,0.9,0.9,0.7,0.9
+"After exploring ancient forts and temples, I enjoy a relaxing evening by the lake followed by a fun-filled day at an amusement park.",0.9,0.9,0.7,0.6,0.9,0.8,0.6,0.9,0.8,0.7,0.9
+"A scenic boat ride on a lake, followed by an adventurous trek through national parks, and ending with a visit to cultural temples, makes for a fulfilling day.",0.8,0.9,0.6,0.9,0.7,0.9,0.7,0.9,0.9,0.8,0.9
+"I enjoy starting my day with a hike through national parks, followed by a relaxing temple visit, and finishing with an exciting day at the beach.",0.9,0.6,0.9,0.8,0.7,0.9,0.8,0.9,0.9,0.7,0.9
+"Whether it's the serenity of lakes, the adventure of sports at the beach, or the cultural richness of temples, this trip offers a balance of everything I love.",0.8,0.9,0.9,0.5,0.6,0.9,0.7,0.9,0.9,0.8,0.9
+"Exploring temples and forts during the day, followed by a relaxing boat ride on the lake and an evening at an amusement park, creates the perfect vacation.",0.9,0.8,0.6,0.7,0.8,0.7,0.8,0.9,0.9,0.7,0.9
+"A combination of adventure sports on the beach, cultural exploration of temples, and serenity by the lake makes for the ultimate vacation.",0.6,0.9,0.9,0.6,0.6,0.9,0.8,0.9,0.9,0.7,0.9
+"A day spent exploring national parks, visiting cultural temples, and enjoying adventure sports at the beach offers a perfect mix of nature, culture, and excitement.",0.9,0.7,0.9,0.9,0.5,0.9,0.8,0.9,0.9,0.8,0.9
+"From a serene boat ride on a lake to exploring ancient temples and ending with an adventurous beach day, this trip is a true blend of culture and excitement.",0.8,0.9,0.9,0.5,0.9,0.7,0.9,0.9,0.9,0.8,0.9
+"I love hiking in national parks, exploring cultural landmarks like temples and forts, and unwinding by the lake or beach, creating the perfect vacation.",0.9,0.9,0.8,0.9,0.7,0.7,0.7,0.9,0.9,0.7,0.9
+"From adventure sports on the beach to peaceful boat rides on lakes and cultural exploration of temples, I enjoy a mix of nature, culture, and thrill.",0.7,0.9,0.9,0.5,0.6,0.9,0.9,0.9,0.9,0.8,0.9
+"I find excitement in both cultural experiences, like exploring temples, and adventure, like hiking through national parks and enjoying adventure sports at the beach.",0.8,0.7,0.9,0.8,0.6,0.9,0.9,0.9,0.8,0.8,0.9
+"After spending the morning exploring ancient temples and forts, I enjoy a boat ride on a serene lake and indulge in adventure sports at the beach.",0.9,0.9,0.9,0.6,0.9,0.8,0.9,0.9,0.9,0.8,0.9
+"Exploring cultural landmarks, enjoying water sports on the beach, and hiking through national parks gives me the perfect combination of excitement and relaxation.",0.8,0.8,0.9,0.8,0.6,0.9,0.7,0.9,0.9,0.7,0.9
+"Whether it's the tranquility of lakes, the rush of adventure sports, or the peace found in temples and national parks, I love combining them all in one trip.",0.8,0.9,0.8,0.7,0.7,0.9,0.8,0.9,0.9,0.8,0.9
+"A day spent exploring forts and temples, followed by an adventurous beach day, and a peaceful boat ride on a lake is the perfect combination of history and nature.",0.9,0.9,0.7,0.6,0.9,0.8,0.9,0.9,0.9,0.8,0.9
+"I find peace in temples, adventure in national parks, and fun at amusement parks, making every day of the trip memorable.",0.9,0.7,0.9,0.9,0.6,0.9,0.6,0.9,0.9,0.8,0.9
+"A perfect vacation for me includes adventure sports at the beach, a peaceful walk by the lake, and a cultural exploration of ancient temples.",0.7,0.9,0.8,0.7,0.6,0.9,0.8,0.9,0.9,0.8,0.9
+"Whether it's hiking in national parks, relaxing by serene lakes, or indulging in cultural experiences like visiting temples and forts, this trip offers it all.",0.9,0.9,0.6,0.9,0.7,0.7,0.6,0.9,0.9,0.7,0.9
+"From the peaceful serenity of a lake to the excitement of adventure sports at the beach, and the cultural immersion in temples, this trip is full of contrasts.",0.8,0.9,0.9,0.6,0.6,0.9,0.7,0.9,0.9,0.8,0.9
+"Exploring cultural landmarks, enjoying lakeside relaxation, and engaging in adventure sports at the beach, is the best way to experience all that nature and culture offer.",0.9,0.9,0.9,0.5,0.6,0.9,0.9,0.9,0.9,0.8,0.9
+"A blend of hiking through national parks, cultural exploration of forts and temples, and adrenaline-packed beach activities makes for the perfect vacation.",0.9,0.7,0.8,0.9,0.9,0.9,0.9,0.9,0.9,0.7,0.9

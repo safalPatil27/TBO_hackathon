@@ -1,3 +1,4 @@
+import { Configuration, OpenAIApi } from "openai";
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
@@ -6,10 +7,16 @@ import socketConfig from "./config/socket.js";
 
 const server = http.createServer(app);
 socketConfig(server);
+
 dotenv.config({
     path: '../.env'
 });
 const PORT = process.env.PORT || 8000;
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 connectDB()
     .then(() => {
