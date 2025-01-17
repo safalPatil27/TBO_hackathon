@@ -1,27 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
-const activitySchema = new Schema({
-    activityName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    startTime: {
-        type: String,
-        required: true
-    },
-    endTime: {
-        type: String,
-        required: true
-    },
-    cost: {
-        type: Number,
-        required: true,
-        min: 0
-    }
-}, { _id: false }); // No separate `_id` for subdocuments
 
 const destinationSchema = new Schema({
+    id:{
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true,
@@ -31,20 +15,24 @@ const destinationSchema = new Schema({
         type: String,
         trim: true
     },
-    startDate: {
+    Date: {
         type: Date,
         required: true
     },
-    endDate: {
-        type: Date,
+    startTime: {
+        type: String,
+        required: true
+    },
+    endTime: {
+        type: String,
         required: true
     },
     banner: {
         type: String,
         trim: true
     },
-    activities: [activitySchema]
-}, { _id: false });
+    Type: String
+});
 
 const hotelSchema = new Schema({
     name: {
@@ -107,6 +95,11 @@ const itinerarySchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    Days: {
+        type: Number,
+        required: true,
+        min: 1
     },
     createdAt: {
         type: Date,

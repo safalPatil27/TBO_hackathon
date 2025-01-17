@@ -1,10 +1,17 @@
+import { Configuration, OpenAIApi } from "openai";
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import {app} from "./app.js";
 
+
 dotenv.config({
     path: './.env'
 });
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 connectDB()
 .then(() => {
