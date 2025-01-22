@@ -5,9 +5,9 @@ import {uploadOnCloudinary} from ".../utils/cloudinary.js";
 import { ApiResponse } from ".../utils/ApiResponse.js";
 
 const create_Itinerary = asyncHandler(async (req, res) => {
-    const {title, location, days} = req.body;
+    const {title, location, days, budget} = req.body;
 
-    if (!title || !location || !days) {
+    if (!title || !location || !days|| !budget) {
         throw new ApiError(400, 'Missing required fields');
     }
     const newItinerary = await Itinerary.create({
@@ -20,7 +20,8 @@ const create_Itinerary = asyncHandler(async (req, res) => {
                 userId: req.user._id,
                 access: "owner"
             }
-        ]
+        ],
+        budget
     });
     
 
@@ -87,85 +88,288 @@ const addHotel_to_Itinerary = asyncHandler(async (req, res) => {
 });
 
 const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
-    const{ itineraryId, destinations } = req.body;
-    const images = req.files;
-    if (!itineraryId || !destinations) {
-        throw new ApiError(400, 'Missing required fields');
+    const{ itineraryId, itinerary } = req.body;
+    if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
+        throw new ApiError(400, "Itinerary ID and an array of destinations are required.");
     }
 
-    if(images.length !== destinations.length) {
-        throw new ApiError(400, 'Number of images does not match number of destinations')
+    // Flatten the nested array (if itinerary is a 2D array)
+    const destinations = itinerary.flat();
+
+   
+    const formattedDestinations = destinations.map(dest => {
+        const {
+            id, 
+            name, 
+            significance, 
+            city, 
+            state, 
+            type, 
+            Date, 
+            airportWithin50kmRadius, 
+            startTime, 
+            endTime, 
+            costPerDay, 
+            image_url
+        } = dest;
+
+        return {
+            id,
+            name,
+            significance,
+            city,
+            state,
+            type,
+            Date,
+            airportWithin50kmRadius,
+            startTime,
+            endTime,
+            costPerDay,
+            banner: image_url
+        };
+    });
+
+    // Perform a bulk update
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+        itineraryId,
+        { $push: { destinations: formattedDestinations } }, // Set the entire destinations array
+        { new: true, upsert: true } // Return the updated document and create if not exists
+    );
+
+    if (!updatedItinerary) {
+        throw new ApiError(500, "Something went wrong while updating the itinerary!");
     }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "Destinations added successfully."
+            )
+        );
     
-    for(let i = 0; i < destinations.length; i++) {
-        const {name, description, Date, startTime, endTime, costPerDay} = destinations[i];
-        const imagelocalpath = image[i].path;
-        const image = uploadOnCloudinary(imagelocalpath);
+});
 
-        if(!image.url){
-            throw new ApiError(500, "Failed to upload image to cloudinary");
+const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
+    const{ itineraryId, itinerary } = req.body;
+    if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
+        throw new ApiError(400, "Itinerary ID and an array of destinations are required.");
+    }
+
+    // Flatten the nested array (if itinerary is a 2D array)
+    const destinations = itinerary.flat();  
+    const formattedDestinations = destinations.map(dest => {
+        const {
+            id, 
+            name, 
+            significance, 
+            city, 
+            state, 
+            type, 
+            Date, 
+            airportWithin50kmRadius, 
+            startTime, 
+            endTime, 
+            costPerDay, 
+            image_url
+        } = dest;
+
+        return {
+            id,
+            name,
+            significance,
+            city,
+            state,
+            type,
+            Date,
+            airportWithin50kmRadius,
+            startTime,
+            endTime,
+            costPerDay,
+            banner: image_url
+        };
+    });
+
+    // Perform a bulk update
+    const updatedItinerary = await Itinerary.findByIdAndUpdate(
+        itineraryId,
+        { $set: { destinations: formattedDestinations } }, // Set the entire destinations array
+        { new: true, upsert: true } // Return the updated document and create if not exists
+    );
+
+    if (!updatedItinerary) {
+        throw new ApiError(500, "Something went wrong while updating the itinerary!");
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "Destinations updated successfully."
+            )
+        );
+});
+
+const getitinerary = asyncHandler(async (req, res) => {
+    const { itineraryId } = req.params;
+
+    if (!itineraryId) {
+        throw new ApiError(400, "Itinerary ID is required.");
+    }
+
+    const itinerary = await Itinerary.findById(itineraryId)
+    .select("-hotels -destinations");
+  
+
+    if (!itinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                itinerary,
+                "Itinerary fetched successfully."
+            )
+        )
+});
+
+const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
+    const { itineraryId } = req.params;
+
+    const itinerary = await Itinerary.findById(itineraryId).populate("destinations");
+    if (!itinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    const destinations = itinerary.destinations; 
+    const days = itinerary.Days;
+
+    let formulate_destination = [];
+    let idx = 0;
+
+
+    for (let i = 0; i < days; i++) {
+        let collections = []; 
+
+        for (let j = 0; j < 5 && idx < destinations.length; j++) {
+            collections.push(destinations[idx]);
+            idx++;
         }
-        const newDestination = await Itinerary.findByIdAndUpdate(
-            itineraryId,
-            {
-                $push: {
-                    destinations: {
-                        name,
-                        description,    
-                        Date,  
-                        startTime,
-                        endTime,
-                        costPerDay,
-                        banner: image?.url
-                    }
-                }
-            }    
+
+    
+        while (collections.length < 5) {
+            collections.push({});
+        }
+
+      
+        formulate_destination.push(collections);
+    }
+
+  
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                formulate_destination,
+                "Destinations fetched successfully."
+            )
         );
 
-        if (!newDestination) {
-            throw new ApiError(500, "Something went wrong while adding destination!")
-        }
-
-    }
-
-    return res
-    .status(201)
-    .json(
-        new ApiResponse(
-            200, 
-            {}, 
-            "Destinations added Successfully"
-        )
-    );
-})
-
-const addUsertoitinerary = asyncHandler(async (req, res) => {
-    const itineraryId = req.param.itineraryId;
-    const userId = req.body.userId;
-    const access = req.body.access;
-    const newItinerary = await Itinerary.findByIdAndUpdate(itineraryId, {
-        $push: {
-            permissions: {
-                userId,
-                access: access,
-            }
-        }
-    });
-    if (!newItinerary) {
-        throw new ApiError(500, "Something went wrong while adding user to itinerary!")
-    }
-
-    return res
-    .status(201)
-    .json(
-        new ApiResponse(
-            200, 
-            {}, 
-            "User added Successfully"
-        )
-    )
 });
 
-const updateToItinerary = asyncHandler(async (req, res) => {
+const getitinerary_by_user = asyncHandler(async (req, res) => {
     
+    const itinerary = await Itinerary.find({ "userId": req?.user_id }).populate("destinations");
+    if (!itinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                itinerary,
+                "Itinerary fetched successfully."
+            )
+        )
 });
+
+const delete_Itinerary = asyncHandler(async (req, res) => {
+    const { itineraryId } = req.params;
+
+    if (!itineraryId) {
+        throw new ApiError(400, "Itinerary ID is required.");
+    }
+    const itinerary = await Itinerary.findById(itineraryId);
+
+    if (!itinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    await Itinerary.findByIdAndDelete(itineraryId);
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {}, 
+                "Itinerary deleted successfully."
+            )
+        )
+});
+
+const get_Status_of_User_Itinerary = asyncHandler(async (req, res) => {
+    const { itineraryId, userId } = req.params;
+
+    if (!itineraryId) {
+        throw new ApiError(400, "Itinerary ID is required.");
+    }
+
+    const itinerary = await Itinerary.findById(itineraryId);
+
+    if (!itinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    const userAccess = itinerary.permissions?.find(
+        (permission) => permission.userId.toString() === userId.toString()
+    )?.access;
+
+    if (!userAccess) {
+        throw new ApiError(403, "User does not have permissions.");
+    }
+
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                userAccess,
+                "User status fetched successfully."
+            )
+        )
+
+});
+
+export {
+    create_Itinerary,
+    addHotel_to_Itinerary,
+    addDestination_to_Itinerary,
+    updateDestinations_to_Itinerary,
+    getitinerary,
+    getitinerary_by_user,
+    getDestinations_by_itinerary,
+    delete_Itinerary,
+    get_Status_of_User_Itinerary
+}

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 
 const destinationSchema = new Schema({
-    id:{
+    id: {
         type: Number,
         required: true
     },
@@ -11,29 +11,46 @@ const destinationSchema = new Schema({
         required: true,
         trim: true
     },
-    description: {
+    significance: {
         type: String,
+        trim: true // Matches the "significance" in the example
+    },
+    city: {
+        type: String,
+        required: true,
+        trim: true // For the "city" field in the example
+    },
+    state: {
+        type: String,
+        required: true,
+        trim: true // For the "state" field in the example
+    },
+    type: {
+        type: String,
+        required: true, // Matches the "type" field, e.g., "Temple"
         trim: true
     },
+    airportWithin50kmRadius: {
+        type: Boolean,
+        required: true // Matches the "airportWithin50kmRadius" field
+    },
     Date: {
-        type: Date,
-        required: true
+        type: Number,
+        required: true // Matches the "day" field
     },
     startTime: {
         type: String,
-        required: true
+        required: false 
     },
     endTime: {
         type: String,
-        required: true
+        required: false 
     },
     banner: {
         type: String,
         trim: true
-    },
-    Type: String
+    }
 });
-
 const hotelSchema = new Schema({
     name: {
         type: String,
@@ -59,8 +76,10 @@ const hotelSchema = new Schema({
     costPerDay: {
         type: Number,
         required: true,
+        default: 0,
         min: 0
-    }
+    },
+    
 }, { _id: false });
 
 const permissionSchema = new Schema({
