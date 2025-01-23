@@ -5,6 +5,7 @@ from openai import OpenAI
 import json
 from dotenv import load_dotenv
 import os
+import requests
 load_dotenv()
 
 app = Flask(__name__)
@@ -12,6 +13,39 @@ app = Flask(__name__)
 token = os.getenv("api_token")
 endpoint = "https://models.inference.ai.azure.com"
 modelName = "gpt-4o"
+
+UNSPLASH_API_URL = "https://api.unsplash.com/search/photos"
+
+ACCESS_KEY = os.getenv("access_key")
+
+def get_location_image(location):
+    """
+    Fetches real-life images of a location from Unsplash.
+    """
+    try:
+
+        if not location:
+            return ""
+
+        # API Request to Unsplash
+        params = {
+            "query": location,
+            "per_page": 1,  # Fetch a single image
+            "client_id": ACCESS_KEY,
+        }
+        response = requests.get(UNSPLASH_API_URL, params=params)
+        response.raise_for_status()
+
+        # Parse Response
+        data = response.json()
+        if data["results"]:
+            image_url = data["results"][0]["urls"]["regular"]
+            return image_url
+        else:
+            return ""
+
+    except requests.exceptions.RequestException as e:
+        return ""
 
 '''
 {
@@ -23,145 +57,174 @@ modelName = "gpt-4o"
 }
 
 {
-  {
   "itinerary": [
     [
       {
         "airportWithin50kmRadius": true,
         "city": "London",
+        "costPerDay": "50$",
         "id": 1,
-        "name": "Kew Gardens",
-        "significance": "A UNESCO World Heritage Site known for its vast botanical gardens and glasshouses.",
-        "state": "England",
-        "type": "National Park"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 2,
-        "name": "The Ivy Richmond",
-        "significance": "A stylish spot serving classic British dishes with a modern twist.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 3,
+        "image_url": "https://images.unsplash.com/photo-1679357999570-44d8a39cb131?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxTdC4lMjBQYXVsJTI3cyUyMENhdGhlZHJhbCUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODE4fDA&ixlib=rb-4.0.3&q=80&w=1080",
         "name": "St. Paul's Cathedral",
-        "significance": "An iconic site with an impressive dome, rich history, and panoramic city views.",
+        "significance": "An iconic Anglican cathedral and a masterpiece of English Baroque architecture.",
         "state": "England",
         "type": "Temple"
       },
       {
         "airportWithin50kmRadius": true,
         "city": "London",
+        "costPerDay": "100$",
+        "id": 2,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxEaXNob29tJTIwQ292ZW50JTIwR2FyZGVuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MTl8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Dishoom Covent Garden",
+        "significance": "Famous for its classic Bombay-style dishes in a contemporary setting.",
+        "state": "England",
+        "type": "Restaurant"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "60$",
+        "id": 3,
+        "image_url": "https://images.unsplash.com/photo-1583582306365-f9813cfee3f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxLZXclMjBHYXJkZW5zJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjB8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Kew Gardens",
+        "significance": "A UNESCO World Heritage site with stunning landscapes and botanical collections.",
+        "state": "England",
+        "type": "National Park"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "100$",
         "id": 4,
-        "name": "Dishoom Shoreditch",
-        "significance": "A popular eatery offering Bombay-inspired comfort food and an elegant ambiance.",
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxUaGUlMjBJdnklMjBDaGVsc2VhJTIwR2FyZGVuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjF8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "The Ivy Chelsea Garden",
+        "significance": "Known for its beautiful garden terrace and modern British menu.",
         "state": "England",
         "type": "Restaurant"
       },
       {
         "airportWithin50kmRadius": true,
         "city": "London",
+        "costPerDay": "40$",
         "id": 5,
-        "name": "Richmond Park",
-        "significance": "A massive green space that's home to wild deer and offers scenic walking trails.",
-        "state": "England",
-        "type": "National Park"
-      }
-    ],
-    [
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 6,
-        "name": "Hyde Park",
-        "significance": "One of London's largest and most famous parks, perfect for leisurely strolls and boating.",
-        "state": "England",
-        "type": "National Park"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 7,
-        "name": "Sketch: The Lecture Room & Library",
-        "significance": "A Michelin-starred restaurant offering gourmet European cuisine with an artistic ambiance.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 8,
-        "name": "Westminster Abbey",
-        "significance": "A historic church famous for royal ceremonies, stunning architecture, and cultural heritage.",
-        "state": "England",
-        "type": "Temple"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 9,
-        "name": "Duck & Waffle",
-        "significance": "A modern British restaurant known for its panoramic cityscape views and delightful dishes.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 10,
-        "name": "Regent's Park",
-        "significance": "A beautiful park with formal gardens, an open-air theatre, and family-friendly activities.",
-        "state": "England",
-        "type": "National Park"
-      }
-    ],
-    [
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 11,
-        "name": "The British Museum",
-        "significance": "One of the largest and most comprehensive museums in the world, showcasing global history.",
-        "state": "England",
-        "type": "Cultural"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 12,
-        "name": "Gymkhana",
-        "significance": "An upscale restaurant offering contemporary Indian cuisine and refined flavors.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 13,
-        "name": "Tower of London",
-        "significance": "A historic castle and former royal residence, housing the Crown Jewels.",
-        "state": "England",
-        "type": "Fort"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 14,
-        "name": "Flat Iron",
-        "significance": "A cozy eatery specializing in delicious, tender steaks at reasonable prices.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "id": 15,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxQcmltcm9zZSUyMEhpbGwlMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgyMnww&ixlib=rb-4.0.3&q=80&w=1080",
         "name": "Primrose Hill",
         "significance": "Offers panoramic views of the London skyline and a peaceful environment.",
+        "state": "England",
+        "type": "Scenic"
+      }
+    ],
+    [
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "50$",
+        "id": 6,
+        "image_url": "https://images.unsplash.com/photo-1564426205026-6b79dba3b800?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxXZXN0bWluc3RlciUyMEFiYmV5JTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjN8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Westminster Abbey",
+        "significance": "A historic church and site of many royal coronations and weddings.",
+        "state": "England",
+        "type": "Temple"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "100$",
+        "id": 7,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxSdWxlcyUyMFJlc3RhdXJhbnQlMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgyNHww&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Rules Restaurant",
+        "significance": "London’s oldest restaurant serving traditional British cuisine.",
+        "state": "England",
+        "type": "Restaurant"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "30$",
+        "id": 8,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxIeWRlJTIwUGFyayUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODI1fDA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Hyde Park",
+        "significance": "One of London’s largest and most famous parks with plenty of open space and activities.",
+        "state": "England",
+        "type": "National Park"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "100$",
+        "id": 9,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxCZXJuZXJzJTIwVGF2ZXJuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjZ8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Berners Tavern",
+        "significance": "Lavish venue with traditional British and contemporary European dishes.",
+        "state": "England",
+        "type": "Restaurant"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "80$",
+        "id": 10,
+        "image_url": "https://images.unsplash.com/photo-1500380804539-4e1e8c1e7118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxUb3dlciUyMG9mJTIwTG9uZG9uJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4Mjd8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Tower of London",
+        "significance": "A historic fortress and home to the Crown Jewels.",
+        "state": "England",
+        "type": "Fort"
+      }
+    ],
+    [
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "40$",
+        "id": 11,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxCQVBTJTIwU2hyaSUyMFN3YW1pbmFyYXlhbiUyME1hbmRpciUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODI5fDA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "BAPS Shri Swaminarayan Mandir",
+        "significance": "A stunning Hindu temple built entirely from hand-carved Italian marble and Bulgarian limestone.",
+        "state": "England",
+        "type": "Temple"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "100$",
+        "id": 12,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxTa2V0Y2glMjBHYWxsZXJ5JTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4Mjl8MA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Sketch Gallery",
+        "significance": "Known for its quirky interior design and indulgent afternoon tea.",
+        "state": "England",
+        "type": "Restaurant"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "50$",
+        "id": 13,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxSaWNobW9uZCUyMFBhcmslMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgzMXww&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Richmond Park",
+        "significance": "A vast park known for its scenic beauty and free-roaming deer.",
+        "state": "England",
+        "type": "National Park"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "100$",
+        "id": 14,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxQZXRlcnNoYW0lMjBOdXJzZXJpZXMlMjBDYWYlQzMlQTklMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgzMXww&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Petersham Nurseries Café",
+        "significance": "A charming café offering a seasonal menu amidst a greenhouse setting.",
+        "state": "England",
+        "type": "Restaurant"
+      },
+      {
+        "airportWithin50kmRadius": true,
+        "city": "London",
+        "costPerDay": "30$",
+        "id": 15,
+        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxIYW1wc3RlYWQlMjBIZWF0aCUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODMyfDA&ixlib=rb-4.0.3&q=80&w=1080",
+        "name": "Hampstead Heath",
+        "significance": "An expansive ancient heath offering sweeping views of the city from Parliament Hill.",
         "state": "England",
         "type": "Scenic"
       }
@@ -281,11 +344,15 @@ def predict():
         cleaned_itinerary = itinerary.replace("```", "").replace("\n", "").replace("json", "")
         output = json.loads(cleaned_itinerary)
 
+        for day in output:
+            for entry in day:
+                entry["image_url"] = get_location_image(entry["name"]+", "+entry["city"] + ", " + entry["state"])
         
         return jsonify({"itinerary": output}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @app.route('/change', methods=['POST'])
@@ -335,7 +402,8 @@ def change():
                     "name": "Primrose Hill",
                     "significance": "Offers panoramic views of the London skyline and a peaceful environment.",
                     "state": "England",
-                    "type": "Scenic"
+                    "type": "Scenic",
+                    
                     costPerDay: 100$
             }}
             3.The final  Output should be json of just modified location. Just give json output with no other words."""
@@ -351,10 +419,9 @@ def change():
         changed_location = str(response.choices[0].message.content)
         
         cleaned_changed_location = changed_location.replace("'", '"').replace("```", "").replace("\n", "").replace("json", "")
-        print(cleaned_changed_location)
         output = json.loads(cleaned_changed_location)
 
-        
+        output["image_url"] = get_location_image(output["name"]+", "+output["city"])
         return jsonify({"changed_location": output}), 200
 
     except Exception as e:
