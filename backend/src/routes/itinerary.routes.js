@@ -1,7 +1,8 @@
-import {Router} from "express";
-import { create_Itinerary, 
-    addHotel_to_Itinerary, 
-    addDestination_to_Itinerary, 
+import { Router } from "express";
+import {
+    create_Itinerary,
+    addHotel_to_Itinerary,
+    addDestination_to_Itinerary,
     updateDestinations_to_Itinerary,
     getitinerary,
     getitinerary_by_user,

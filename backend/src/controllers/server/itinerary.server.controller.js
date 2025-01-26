@@ -15,9 +15,9 @@ const findCodeByLocation = (location, cityList) => {
     return city ? city.Code : null;
 };
 const create_Itinerary = asyncHandler(async (req, res) => {
-    const {title, location, days, budget} = req.body;
+    const { title, location, days, budget } = req.body;
 
-    if (!title || !location || !days|| !budget) {
+    if (!title || !location || !days || !budget) {
         throw new ApiError(400, 'Missing required fields');
     }
     const newItinerary = await Itinerary.create({
@@ -33,7 +33,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
         ],
         budget
     });
-    
+
 
     if (!newItinerary) {
         throw new ApiError(500, "Something went wrong while creating Itinerary!")
@@ -41,8 +41,8 @@ const create_Itinerary = asyncHandler(async (req, res) => {
 
     return res.status(201).json(
         new ApiResponse(
-            200, 
-            newItinerary, 
+            200,
+            newItinerary,
             "User registered Successfully"
         )
     )
@@ -210,7 +210,7 @@ const addHotel_to_Itinerary = asyncHandler(async (req, res) => {
 
 
 const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
-    const{ itineraryId, itinerary } = req.body;
+    const { itineraryId, itinerary } = req.body;
     if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
         throw new ApiError(400, "Itinerary ID and an array of destinations are required.");
     }
@@ -218,20 +218,20 @@ const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
     // Flatten the nested array (if itinerary is a 2D array)
     const destinations = itinerary.flat();
 
-   
+
     const formattedDestinations = destinations.map(dest => {
         const {
-            id, 
-            name, 
-            significance, 
-            city, 
-            state, 
-            type, 
-            Date, 
-            airportWithin50kmRadius, 
-            startTime, 
-            endTime, 
-            costPerDay, 
+            id,
+            name,
+            significance,
+            city,
+            state,
+            type,
+            Date,
+            airportWithin50kmRadius,
+            startTime,
+            endTime,
+            costPerDay,
             image_url
         } = dest;
 
@@ -271,30 +271,30 @@ const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
                 "Destinations added successfully."
             )
         );
-    
+
 });
 
 const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
-    const{ itineraryId, itinerary } = req.body;
+    const { itineraryId, itinerary } = req.body;
     if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
         throw new ApiError(400, "Itinerary ID and an array of destinations are required.");
     }
 
     // Flatten the nested array (if itinerary is a 2D array)
-    const destinations = itinerary.flat();  
+    const destinations = itinerary.flat();
     const formattedDestinations = destinations.map(dest => {
         const {
-            id, 
-            name, 
-            significance, 
-            city, 
-            state, 
-            type, 
-            Date, 
-            airportWithin50kmRadius, 
-            startTime, 
-            endTime, 
-            costPerDay, 
+            id,
+            name,
+            significance,
+            city,
+            state,
+            type,
+            Date,
+            airportWithin50kmRadius,
+            startTime,
+            endTime,
+            costPerDay,
             image_url
         } = dest;
 
@@ -344,8 +344,8 @@ const getitinerary = asyncHandler(async (req, res) => {
     }
 
     const itinerary = await Itinerary.findById(itineraryId)
-    .select("-hotels -destinations");
-  
+        .select("-hotels -destinations");
+
 
     if (!itinerary) {
         throw new ApiError(404, "Itinerary not found.");
@@ -370,7 +370,7 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Itinerary not found.");
     }
 
-    const destinations = itinerary.destinations; 
+    const destinations = itinerary.destinations;
     const days = itinerary.Days;
 
     let formulate_destination = [];
@@ -378,23 +378,23 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 
 
     for (let i = 0; i < days; i++) {
-        let collections = []; 
+        let collections = [];
 
         for (let j = 0; j < 5 && idx < destinations.length; j++) {
             collections.push(destinations[idx]);
             idx++;
         }
 
-    
+
         while (collections.length < 5) {
             collections.push({});
         }
 
-      
+
         formulate_destination.push(collections);
     }
 
-  
+
     return res
         .status(200)
         .json(
@@ -445,7 +445,7 @@ const delete_Itinerary = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(
                 200,
-                {}, 
+                {},
                 "Itinerary deleted successfully."
             )
         )

@@ -40,11 +40,11 @@ const destinationSchema = new Schema({
     },
     startTime: {
         type: String,
-        required: false 
+        required: false
     },
     endTime: {
         type: String,
-        required: false 
+        required: false
     },
     banner: {
         type: String,
