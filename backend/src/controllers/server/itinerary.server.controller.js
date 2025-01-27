@@ -1,8 +1,9 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import {ApiError} from "../../utils/ApiError.js";
-import Itinerary from "../../models/itinerary.model.js";
+import {ApiError} from  "../../utils/ApiError.js";
+import { Itinerary } from "../../models/itinerary.model.js";
 import {uploadOnCloudinary} from "../../utils/cloudinary.js";
-import { ApiResponse } from "../../utils/ApiResponse.js";
+import { ApiResponse } from  "../../utils/ApiResponse.js";
+import mongoose from "mongoose";
 
 const create_Itinerary = asyncHandler(async (req, res) => {
     const {title, location, days, budget} = req.body;
@@ -14,7 +15,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
         userId: req.user._id,
         title,
         location: location.toLowerCase(),
-        days,
+        Days:days,
         permissions: [
             {
                 userId: req.user._id,
@@ -287,7 +288,8 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 
 const getitinerary_by_user = asyncHandler(async (req, res) => {
     
-    const itinerary = await Itinerary.find({ "userId": req?.user_id }).populate("destinations");
+    console.log(req?.user);
+    const itinerary = await Itinerary.find({ "userId": req?.user._id });
     if (!itinerary) {
         throw new ApiError(404, "Itinerary not found.");
     }
@@ -326,6 +328,36 @@ const delete_Itinerary = asyncHandler(async (req, res) => {
                 "Itinerary deleted successfully."
             )
         )
+});
+
+const add_user_with_Status_Itinerary = asyncHandler(async (req, res) => {
+    const { userId, status } = req.body;
+
+    if (!userId || !status) {
+        throw new ApiError(400, "User ID and status are required.");
+    }
+
+    // Convert userId string to ObjectId
+    const user_id = new mongoose.Types.ObjectId(userId);
+
+    // Update the itinerary by pushing to the permissions array
+    const updatedItinerary = await Itinerary.findOneAndUpdate(
+        { _id: req.params.itineraryId }, // Match the itinerary by its ID
+        { $push: { permissions: { userId: user_id, access: status } } }, // Push new permission
+        { new: true } // Return the updated document
+    );
+
+    if (!updatedItinerary) {
+        throw new ApiError(404, "Itinerary not found.");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            updatedItinerary.permissions,
+            "User added to the itinerary with the specified status."
+        )
+    );
 });
 
 const get_Status_of_User_Itinerary = asyncHandler(async (req, res) => {
@@ -371,5 +403,6 @@ export {
     getitinerary_by_user,
     getDestinations_by_itinerary,
     delete_Itinerary,
+    add_user_with_Status_Itinerary,
     get_Status_of_User_Itinerary
 }

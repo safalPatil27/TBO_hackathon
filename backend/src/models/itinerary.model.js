@@ -144,5 +144,4 @@ const itinerarySchema = new Schema({
     timestamps: true // Automatically handles `createdAt` and `updatedAt`
 });
 
-const Itinerary =  mongoose.model("Itinerary", itinerarySchema);
-export default Itinerary;
+export const Itinerary =  mongoose.model("Itinerary", itinerarySchema);
