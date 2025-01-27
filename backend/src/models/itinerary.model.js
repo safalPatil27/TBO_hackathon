@@ -52,14 +52,46 @@ const destinationSchema = new Schema({
     }
 });
 const hotelSchema = new Schema({
-    name: {
+    HotelName: {
         type: String,
         required: true,
         trim: true
     },
-    description: {
+    HotelRating: {
         type: String,
+        required: true,
+        enum: ["OneStar", "TwoStar", "ThreeStar", "FourStar", "FiveStar"], // Using enum for ratings
         trim: true
+    },
+    Address: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    CountryName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    CountryCode: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    CityName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    TotalFare: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    TotalTax: {
+        type: Number,
+        required: true,
+        min: 0
     },
     startDate: {
         type: Date,
@@ -68,19 +100,10 @@ const hotelSchema = new Schema({
     endDate: {
         type: Date,
         required: true
-    },
-    banner: {
-        type: String,
-        trim: true
-    },
-    costPerDay: {
-        type: Number,
-        required: true,
-        default: 0,
-        min: 0
-    },
-    
+    }
+  
 }, { _id: false });
+
 
 const permissionSchema = new Schema({
     userId: {
