@@ -26,13 +26,13 @@ const userSchema = new Schema({
         type: String
     },
     itineraries: [{
-        id: { 
+        id: {
             type: Schema.Types.ObjectId,
             ref: 'Itinerary'
         },
-        type: { 
-            type: String, 
-            enum: ["owner", "edit-only", "view-only"] 
+        type: {
+            type: String,
+            enum: ["owner", "edit-only", "view-only"]
         }
     }]
 });
@@ -48,7 +48,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }
 
-userSchema.methods.generateAccessToken = function(){
+userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         {
             _id: this._id,

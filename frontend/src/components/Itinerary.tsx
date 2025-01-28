@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { data as itineraryData } from "../constants/data";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Item, MAX_LOCATIONS_PER_DAY, MAX_RESTAURANTS_PER_DAY, sortItems, updateItemIds } from '../utils/itineraryUtils';
 import ItineraryListItem from './Itinerary/ItineraryListItem';
 const socket = io("http://localhost:8000");
@@ -177,7 +177,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
     return (
         <div className="min-h-screen relative bg-gradient-to-b from-sky-900 p-4 text-white pt-32">
             <h1 className="text-6xl font-semibold text-center mb-6">{title} </h1>
-            <ToastContainer />
+
             <div className='z-50  top-36 right-4 fixed' >
                 <button className=' text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800'
                     disabled={data.length === 0}

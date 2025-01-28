@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import location_logo from '../assets/images/location_logo.png';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthUserContexts';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { state } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,9 +27,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`  fixed top-0 w-full z-10 p-4 transition-all duration-300 ${
-        isScrolled ? 'bg-black bg-opacity-70 backdrop-blur-md' : 'bg-transparent'
-      } text-white`}
+      className={`  fixed top-0 w-full z-10 p-4 transition-all duration-300 ${isScrolled ? 'bg-black bg-opacity-70 backdrop-blur-md' : 'bg-transparent'
+        } text-white`}
     >
       <div className="container mx-auto flex justify-between items-center">
         <ul className="hidden md:flex justify-around w-full items-center text-sm font-bold">
@@ -58,11 +59,22 @@ const Navbar = () => {
               TOURS
             </Link>
           </li>
-          <li>
-            <Link to="/Login" className="hover:text-primary transition duration-200">
-              LOGIN
-            </Link>
-          </li>
+          {state.isAuthenticated && (
+            <li>
+              <Link to="/dashboard" className="hover:text-primary transition duration-200">
+                Dashboard
+              </Link>
+            </li>
+          )}
+          {
+            !state.isAuthenticated && (
+              <li>
+                <Link to="/Login" className="hover:text-primary transition duration-200">
+                  LOGIN
+                </Link>
+              </li>
+            )
+          }
         </ul>
 
         {/* for Mobile Screen */}

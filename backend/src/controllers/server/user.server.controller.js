@@ -1,6 +1,6 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import {ApiError} from "../../utils/ApiError.js";
-import {ApiResponse} from "../../utils/ApiResponse.js";
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
 import { User } from "../../models/user.model.js";
 import jwt from "jsonwebtoken"
 
@@ -9,9 +9,12 @@ import jwt from "jsonwebtoken"
 
 const generateAccessAndRefereshTokens = async(userId) =>{
     try {
-        const user = await User.findById(userId)
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
+        const user = await User.findById(userId);
+        console.log(user, "user");
+
+        const accessToken = user.generateAccessToken();
+
+        const refreshToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
@@ -20,7 +23,7 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 
 
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating referesh and access token")
+        throw new ApiError(500, "Something went wrong while generating referesh and access token" + error)
     }
 }
 
@@ -29,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     const { email, username, password } = req.body
-    console.log("email: ", email);
+    console.log("email: ", email, username, password);
 
     if ([email, username, password].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required")
