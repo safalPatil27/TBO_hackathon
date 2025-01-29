@@ -6,10 +6,12 @@ import json
 from dotenv import load_dotenv
 import os
 import requests
+import json
+
 load_dotenv()
-
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app, origins=["http://127.0.0.1:5173"])
 token = os.getenv("api_token")
 endpoint = "https://models.inference.ai.azure.com"
 modelName = "gpt-4o"
@@ -256,13 +258,14 @@ def predict():
     try:
         # Get JSON data
         data = request.json
-        input_sentence = data.get("sentence")
-        input_tag_array = data.get("tag_array")
-        input_days = data.get("days")
-        input_mainLocation = data.get("mainLocation")
-        input_children = data.get("children")
-
-        # Validate input
+        body = json.loads(data.get("body")) 
+        print(body)
+        input_sentence = body.get("sentence")
+        input_tag_array = body.get("tag_array")
+        input_days = body.get("days")
+        input_mainLocation = body.get("mainLocation")
+        input_children = body.get("children")
+        # Validate input  
         if not input_sentence or not isinstance(input_sentence, str):
             return jsonify({"error": "Invalid or missing 'sentence'. Provide a single sentence as a string."}), 400
 
