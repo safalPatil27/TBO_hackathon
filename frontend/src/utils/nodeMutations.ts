@@ -56,9 +56,11 @@ export const getItineraries = async ({
 
 export const addDestinationToItinerary = async ({
   data,
+  itineraryId,
   bearer,
 }: {
   data: Item;
+  itineraryId: string;
   bearer: string;
 }) => {
   try {
@@ -66,6 +68,7 @@ export const addDestinationToItinerary = async ({
       `/api/v1/itinerary/addDestination/`,
       {
         itinerary: data,
+        itineraryId,
       },
       {
         headers: {

@@ -64,6 +64,7 @@ const ItineraryForm = () => {
       updateDestinationsMutation.mutate({
         data: data.data.data,
         bearer: state.user?.accessToken || "",
+        itineraryId: itinerariesId,
       });
     },
     onError: (error: any) => {
