@@ -12,8 +12,6 @@ import {
 } from "../utils/itineraryUtils";
 import ItineraryListItem from "./Itinerary/ItineraryListItem";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getItineraries } from "../utils/nodeMutations";
 const socket = io("http://localhost:8001");
 
 interface ItineraryProps {
@@ -24,7 +22,6 @@ type ItineraryData = Item[][];
 
 const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
   const { itineraryId } = useParams();
-  console.log(itineraryId);
   const [data, setData] = useState<ItineraryData>(itineraryData);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
@@ -40,7 +37,6 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
     "destination"
   );
 
-  // Handle Modal visibility
   const openAddModal = (dayIndex: number) => {
     setIsAddModalOpen(true);
     setDayIndex(dayIndex); // Default to the first day

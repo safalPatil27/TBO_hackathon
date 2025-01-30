@@ -11,7 +11,7 @@ import json
 load_dotenv()
 from flask_cors import CORS
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:5173"])
+CORS(app, origins=["http://127.0.0.1:5173", "http://localhost:5173"])
 token = os.getenv("api_token")
 endpoint = "https://models.inference.ai.azure.com"
 modelName = "gpt-4o"

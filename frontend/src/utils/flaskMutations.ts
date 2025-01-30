@@ -2,7 +2,7 @@ import { flaskServerAPI } from "./api";
 
 interface FlaskInputs {
   sentence: string;
-  tag_array: string[];
+  tag_array: number[];
   days: number;
   mainLocation: string;
   children: boolean;

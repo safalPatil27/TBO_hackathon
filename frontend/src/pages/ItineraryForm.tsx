@@ -8,12 +8,14 @@ import {
 } from "../utils/nodeMutations";
 import { useAuth } from "../contexts/AuthUserContexts";
 import { useState } from "react";
-
+import { categoryMapping } from "../constants/data";
+import { Circles } from "react-loader-spinner";
+import { toast } from "react-toastify";
 interface IFormData {
   title: string;
   days: number;
   location: string;
-  activities: string[];
+  activities: number[];
   sentence: string;
   children: boolean;
   budget: number;
@@ -22,6 +24,10 @@ const ItineraryForm = () => {
   const navigate = useNavigate();
   const { state } = useAuth();
   const [itinerariesId, setItinerariesId] = useState<string>("");
+  const [loader, setLoader] = useState(false);
+  const [tag_array, setTag_array] = useState<number[]>([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
   const {
     register,
     handleSubmit,
@@ -42,10 +48,13 @@ const ItineraryForm = () => {
     mutationFn: addDestinationToItinerary,
     onSuccess: (data) => {
       console.log(data);
+      setLoader(false);
       navigate(`/itinerary/${itinerariesId}`);
     },
     onError: (error: any) => {
-      console.log(error);
+      const errorMessage = error?.message || "Something went wrong!";
+      toast.error(errorMessage);
+      setLoader(false);
     },
   });
   const flaskMutations = useMutation({
@@ -58,7 +67,9 @@ const ItineraryForm = () => {
       });
     },
     onError: (error: any) => {
-      console.log(error);
+      const errorMessage = error?.message || "Something went wrong!";
+      toast.error(errorMessage);
+      setLoader(false);
     },
   });
   const createItineraryMutation = useMutation({
@@ -68,12 +79,16 @@ const ItineraryForm = () => {
       setItinerariesId(data.data.data._id);
     },
     onError: (error: any) => {
-      console.log(error);
+      const errorMessage = error?.message || "Something went wrong!";
+      toast.error(errorMessage);
+
+      setLoader(false);
     },
   });
 
   const onSubmit = (data: IFormData) => {
     console.log("Form Data:", data);
+    setLoader(true);
     createItineraryMutation.mutate({
       title: data.title,
       days: data.days,
@@ -86,14 +101,36 @@ const ItineraryForm = () => {
       days: data.days,
       mainLocation: data.location,
       children: data.children,
-      tag_array: data.activities,
+      tag_array: tag_array,
     });
-    // navigate("/itineraryCreate");
   };
 
+  const handleCheckboxChange = (index: number, checked: boolean): void => {
+    setTag_array((prevNumbers) =>
+      prevNumbers.map((num, i) =>
+        i === index ? (checked ? num + 1 : num - 1) : num
+      )
+    );
+  };
+  if (loader) {
+    return (
+      <div className="h-screen flex-col gap-4 flex w-full justify-center items-center bg-white">
+        <Circles
+          height="80"
+          width="80"
+          color="#000"
+          ariaLabel="circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+        We are creating your itinerary
+      </div>
+    );
+  }
   return (
     <div className="p-10 py-20 bg-gradient-to-b from-sky-900 flex flex-col items-center justify-center to-white min-h-screen">
-      <div className="w-2/5 mx-auto bg-cyan-800 p-12 my-12 rounded-2xl shadow-xl">
+      <div className="lg:w-2/5 mx-auto bg-cyan-800 p-12 my-12 rounded-2xl shadow-xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid place-content-center font-bold font-Playfair tracking-wider text-2xl mb-6">
             <div className="text-white">
@@ -215,23 +252,46 @@ const ItineraryForm = () => {
           {/* Activities (Multi-Checkbox) */}
           <div className="relative z-0 w-full mb-5 group">
             <span className="block text-sm text-gray-500 dark:text-gray-400 mb-2">
-              Select Activities
+              Select Interests
             </span>
-            <div className="grid grid-cols-2 gap-4">
-              {["Church", "Gurudwara", "Mosque", "Religious Complex", "Religious Shrine", 
-    "Religious Site", "Lake","Beach", "Promenade", "Scenic Area", "National Park", "Bird Sanctuary", "Wildlife Sanctuary","Fort", "Palace", "Historical", "Monument", "War Memorial", "Prehistoric Site","Adventure Sport","Trekking",
-    "Amusement Park", "Theme Park", "Film Studio", "Entertainment","Race Track", "Hill", "Mountain Peak", "Valley", "Waterfall", "Cricket Ground","Museum", "Observatory",
-     "Mall", "Market", "Urban Development Project", "Suspension Bridge", "Border Crossing", "Scenic Point", "Sunrise Point", "Viewpoint"].map((activity) => (
-                <label key={activity} className="flex items-center gap-2 text-white">
-                  <input
-                    type="checkbox"
-                    {...register("activities")}
-                    value={activity}
-                    className="text-blue-600"
-                  />
-                  {activity}
-                </label>
-              ))}
+            <div className="flex flex-col  gap-4">
+              {categoryMapping.map(
+                (
+                  item: {
+                    name: string;
+                    places: string[];
+                  },
+                  index: number
+                ) => (
+                  <div key={index} className="w-full flex flex-col gap-4">
+                    <h2 className="text-md text-white bg-green-500 w-fit px-4 py-2 rounded-full">
+                      {" "}
+                      {item.name}{" "}
+                    </h2>
+                    <div className="w-full gap-4 flex flex-wrap">
+                      {item.places.map((place: string, idx: number) => (
+                        <label
+                          htmlFor={`${place}-${idx}`}
+                          className="flex items-center gap-2 text-white"
+                          key={idx}
+                        >
+                          <input
+                            type="checkbox"
+                            value={place}
+                            {...register("activities")}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => handleCheckboxChange(index, e.target.checked)}
+                            className="text-blue-500"
+                            id={`${place}-${idx}`}
+                          />
+                          {place}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </div>
 
