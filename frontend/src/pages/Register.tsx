@@ -65,6 +65,26 @@ const Register = () => {
                         </h1>
 
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                            {/* Username */}
+                            <div>
+                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-white ">
+                                    Username 
+                                </label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    {...register('email', {
+                                        required: 'Email is required',
+                                        pattern: {
+                                            message: 'Enter a valid email address',
+                                        },
+                                    })}
+                                    className={` border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5    ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                    placeholder="abc"
+                                />
+                                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
+                            </div>
+
                             {/* Email Field */}
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-white ">

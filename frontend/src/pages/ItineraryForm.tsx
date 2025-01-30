@@ -117,7 +117,10 @@ const ItineraryForm = () => {
               Select Activities
             </span>
             <div className="grid grid-cols-2 gap-4">
-              {['Hiking', 'Sightseeing', 'Beach', 'Shopping'].map((activity) => (
+              {["Church", "Gurudwara", "Mosque", "Religious Complex", "Religious Shrine", 
+    "Religious Site", "Lake","Beach", "Promenade", "Scenic Area", "National Park", "Bird Sanctuary", "Wildlife Sanctuary","Fort", "Palace", "Historical", "Monument", "War Memorial", "Prehistoric Site","Adventure Sport","Trekking",
+    "Amusement Park", "Theme Park", "Film Studio", "Entertainment","Race Track", "Hill", "Mountain Peak", "Valley", "Waterfall", "Cricket Ground","Museum", "Observatory",
+     "Mall", "Market", "Urban Development Project", "Suspension Bridge", "Border Crossing", "Scenic Point", "Sunrise Point", "Viewpoint"].map((activity) => (
                 <label key={activity} className="flex items-center gap-2 text-white">
                   <input
                     type="checkbox"
