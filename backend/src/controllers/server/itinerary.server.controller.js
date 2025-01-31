@@ -208,6 +208,8 @@ const addHotel_to_Itinerary = asyncHandler(async (req, res) => {
 
 const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
   const { itineraryId, itinerary } = req.body;
+  console.log(req.body);
+  
   if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
     throw new ApiError(
       400,

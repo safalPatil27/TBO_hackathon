@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthUserContexts";
-import { useQuery } from "@tanstack/react-query";
-import { getItinerariesByUser } from "../utils/nodeMutations";
-import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteItinerary, getItinerariesByUser } from "../utils/nodeMutations";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Sidebar = () => (
   <div className=" w-64 h-full flex flex-col p-4 space-y-6">
@@ -43,10 +44,23 @@ const Header = ({
     </header>
   );
 };
-
+interface Itinerary {
+  _id: string;
+  days: number;
+  budget: number;
+  location: string;
+  permissions: { userId: string; access: string }[];
+  userId: string;
+  destinations: string[];
+  hotels: string[];
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
 const Dashboard = () => {
   const { state, dispatch } = useAuth();
   const navigate = useNavigate();
+  const [itineraries, setItineraries] = useState<Itinerary[]>([]);
   const hanldeLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
@@ -58,13 +72,29 @@ const Dashboard = () => {
   const {
     data: itinerary,
     isLoading,
+    refetch,
     error,
   } = useQuery({
     queryKey: ["GetItineraries"],
     queryFn: () => getItinerariesByUser(state.user?.accessToken || ""),
   });
+  const deleteMutation = useMutation({
+    mutationFn: deleteItinerary,
+    onSuccess: (data) => {
+      console.log("deleted", data.id);
+      refetch();
+      toast.success("Itinerary deleted successfully!");
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.message || "Something went wrong!";
+      toast.error(errorMessage);
+    },
+  })
   useEffect(() => {
     console.log(itinerary, "Get itineraries");
+    if (itinerary) {
+      setItineraries(itinerary.data.data);
+    }
   }, [itinerary, isLoading]);
   return (
     <div className="flex bg-gradient-to-b from-sky-900 pt-32">
@@ -88,7 +118,7 @@ const Dashboard = () => {
             <div className="flex justify-between items-center w-full mb-4">
               <h3 className="text-xl font-semibold ">Itinerary</h3>
               <button
-                className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-600"
+                className="bg-gray-600 px-4 py-2 rounded-md hover:bg-gray-600 text-white"
                 onClick={() => navigate("/itinerary")}
               >
                 Create Itinerary
@@ -97,16 +127,46 @@ const Dashboard = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="p-3">ID</th>
+                  <th className="p-3">Title</th>
                   <th className="p-3">Location</th>
-                  <th className="p-3">Date</th>
+                  <th className="p-3">Days</th>
+                  <th className="p-3">Budget</th>
+                  <th className="p-3">Created At</th>
+                  <th className="p-3">Last Updated</th>
+                  <th className="p-3">Delete</th>
+                  <th className="p-3">Edit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  {error && <td>Error fetching</td>}
-                  {isLoading && <td>Loading...</td>}
-                </tr>
+                {itineraries.map((itinerary) => (
+                  <tr key={itinerary._id}>
+                    <td className="p-3">{itinerary.title}</td>
+                    <td className="p-3">{itinerary.location}</td>
+                    <td className="p-3">{itinerary.days}</td>
+                    <td className="p-3">{itinerary.budget}</td>
+                    <td className="p-3">{itinerary.createdAt}</td>
+                    <td className="p-3">{itinerary.updatedAt}</td>
+                    <td className="p-3">
+                      <button
+                        className="bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 text-white"
+                        onClick={() => deleteMutation.mutate({
+                          id: itinerary._id,
+                          bearer: state.user?.accessToken || ""
+                        })}
+                      >
+                        Delete  
+                      </button>
+                    </td>
+                    <td className="p-3">
+                      <button
+                        className="bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-600 text-white"
+                        onClick={ ()=> navigate(`/itinerary/${itinerary._id}`)}
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </section>

@@ -63,6 +63,8 @@ export const addDestinationToItinerary = async ({
   itineraryId: string;
   bearer: string;
 }) => {
+  console.log(data, itineraryId, bearer, "data");
+  
   try {
     const response = await api.post(
       `/api/v1/itinerary/addDestination/`,
@@ -92,6 +94,27 @@ export const getItinerariesByUser = async (bearer: string) => {
       },
     });
     return response;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "An unexpected error occurred"
+    );
+  }
+};
+
+export const deleteItinerary = async ({
+  bearer,
+  id,
+}: {
+  bearer: string;
+  id: string;
+}) => {
+  try {
+    const response = await api.delete(`/api/v1/itinerary/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${bearer}`,
+      },
+    });
+    return {response, id};
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message || "An unexpected error occurred"

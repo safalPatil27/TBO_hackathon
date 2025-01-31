@@ -18,6 +18,7 @@ const ItineraryListItem = ({
             </p>
             <div className="flex justify-between items-center w-full gap-5">
                 <div className='flex flex-col gap-2 w-full' >
+                    <img src={item.banner || '/placeholder.jpg'} alt={item.name} className="w-full h-40 object-cover rounded-md" />
                     <div className='flex gap-2 justify-between items-center w-full' >
                         <p className="font-medium text-gray-800 w-3/5">{item.name}</p>
                         <p className='  w-2/5 flex justify-end' >

@@ -19,10 +19,19 @@ interface ItineraryProps {
 }
 
 type ItineraryData = Item[][];
+interface ItineraryInfo{
+  _id: string;
+  days: number;
+  budget: number;
+  location: string;
+  permissions: { userId: string; access: string }[];
+  title: string;
+}
 
-const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
+const Itinerary: React.FC<ItineraryProps> = () => {
   const { itineraryId } = useParams();
   const [data, setData] = useState<ItineraryData>(itineraryData);
+  const [itineraryInfo, setItineraryInfo] = useState<ItineraryInfo | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [dayIndex, setDayIndex] = useState(0);
@@ -33,7 +42,7 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
     type: "", // For the user to choose
     distance: 0,
   });
-  const [placeType, setPlaceType] = useState<"destination" | "restaurant">(
+  const [placeType, setPlaceType] = useState<string | "Restaurant">(
     "destination"
   );
 
@@ -53,8 +62,23 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
   const closeRemoveModal = () => setIsRemoveModalOpen(false);
 
   useEffect(() => {
+    socket.emit("joinRoom", itineraryId);
     socket.on("initialData", (initialData) => {
-      setData(initialData);
+      console.log(initialData, "initialData");
+      setItineraryInfo({
+        _id: initialData.itineraryInfo._id,
+        days: initialData.itineraryInfo.Days,
+        budget: initialData.itineraryInfo.budget,
+        location: initialData.itineraryInfo.location,
+        permissions: initialData.itineraryInfo.permissions,
+        title: initialData.itineraryInfo.title
+      })
+      const itinerary =  initialData.itineraryDestinations.map((day: Item[]) => {
+        return sortItems(day).flat();
+      });
+      console.log(itinerary, "initialData");
+      
+      setData(itinerary);
     });
 
     socket.on("updatedData", (updatedData) => {
@@ -100,18 +124,16 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
   const addNewDestination = (dayIndex: number) => {
     const day = data[dayIndex];
 
-    // Count the existing locations and restaurants
-    const locationCount = day.filter((item) => item.type === "location").length;
+    const locationCount = day.filter((item) => item.type != "Restaurant").length;
     const restaurantCount = day.filter(
-      (item) => item.type === "restaurant"
+      (item) => item.type === "Restaurant"
     ).length;
 
     // If the day has space for a location or restaurant
-    if (placeType === "destination" && locationCount < MAX_LOCATIONS_PER_DAY) {
+    if (placeType !="Restaurant" && locationCount < MAX_LOCATIONS_PER_DAY) {
       const newItem: Item = {
         ...newDestination,
         id: Date.now(), // Assign a unique id for the new item
-        type: "location",
       };
 
       const updatedDay = [...day, newItem];
@@ -129,13 +151,13 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
       socket.emit("updateData", updatedData);
       closeAddModal(); // Close the modal after adding the destination
     } else if (
-      placeType === "restaurant" &&
+      placeType === "Restaurant" &&
       restaurantCount < MAX_RESTAURANTS_PER_DAY
     ) {
       const newItem: Item = {
         ...newDestination,
         significance: "", // Remove significance for restaurants
-        type: "restaurant",
+        type: "Restaurant",
       };
 
       const updatedDay = [...day, newItem];
@@ -174,23 +196,28 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
     closeRemoveModal();
   };
 
+  const saveChanges = () => {
+    socket.emit("saveData", {
+      itinerary: data, itineraryId
+    });
+    toast.success("Itinerary saved successfully!");
+  };
+
   useEffect(() => {
     console.log(data, "data \n");
     console.log(currentItem, "currentItem");
   }, [data]);
+  
 
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-sky-900 p-4 text-white pt-32">
-      <h1 className="text-6xl font-semibold text-center mb-6">{title} </h1>
+      <h1 className="text-6xl font-semibold text-center mb-6">{itineraryInfo?.title} </h1>
 
       <div className="z-50  top-36 right-4 fixed">
         <button
           className=" text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800"
           disabled={data.length === 0}
-          onClick={() => {
-            socket.emit("saveData", data);
-            toast.success("Itinerary saved successfully!");
-          }}
+          onClick={saveChanges}
         >
           Save Itinerary
         </button>
@@ -230,14 +257,15 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
 
                     {updatedDayItems.map((item, index) => (
                       <Draggable
-                        draggableId={`${item.id || item.name}-${dayIndex}`}
-                        index={index}
-                        key={item.id || item.name}
+                      key={item.id || `${item.name}-${index}`}
+                      draggableId={`${item.id || item.name}-${dayIndex}`}
+                      index={index}
                       >
                         {(provided) => (
                           <div
                             className="bg-gray-100 rounded-md p-2 mb-2 border border-gray-300 relative"
                             ref={provided.innerRef}
+                            key={index}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
@@ -271,16 +299,16 @@ const Itinerary: React.FC<ItineraryProps> = ({ title }) => {
               <select
                 value={placeType}
                 onChange={(e) =>
-                  setPlaceType(e.target.value as "destination" | "restaurant")
+                  setPlaceType(e.target.value as string | "Restaurant")
                 }
                 className="w-full p-2 bg-white text-gray-900 border border-gray-300 rounded mt-1"
               >
                 <option value="">Select Place Type</option>
-                {data[dayIndex].filter((item) => item.id !== undefined).length <
+                {data[dayIndex].filter((item) => item.type != "Restaurant").length <
                   MAX_LOCATIONS_PER_DAY && (
                   <option value="destination">Destination</option>
                 )}
-                {data[dayIndex].filter((item) => item.id === undefined).length <
+                {data[dayIndex].filter((item) => item.type === "Restaurant").length <
                   MAX_RESTAURANTS_PER_DAY && (
                   <option value="restaurant">Restaurant</option>
                 )}

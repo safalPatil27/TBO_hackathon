@@ -16,6 +16,7 @@ export interface Item {
   state?: string;
   type?: string; // e.g., 'temple', 'fort', 'beach'
   distance?: number; // Distance in km (for restaurants)
+  banner?: string;
 }
 export const updateItemIds = (dayItems: Item[]) => {
   return dayItems.map((item) => {
@@ -33,8 +34,8 @@ export const updateItemIds = (dayItems: Item[]) => {
 };
 
 export const sortItems = (items: Item[]) => {
-  const withId = items.filter((item) => item.id);
-  const withoutId = items.filter((item) => !item.id);
+  const withId = items.filter((item) => item.type != "Restaurant");
+  const withoutId = items.filter((item) => item.type === "Restaurant");
 
   const firstTwoWithId = withId.slice(0, 2);
   const remainingWithId = withId.slice(2);
