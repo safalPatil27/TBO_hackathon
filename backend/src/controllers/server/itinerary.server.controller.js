@@ -39,6 +39,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while creating Itinerary!");
   }
 
+
   return res
     .status(201)
     .json(new ApiResponse(200, newItinerary, "User registered Successfully"));

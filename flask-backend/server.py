@@ -350,7 +350,7 @@ def predict():
         for day in output:
             for entry in day:
                 entry["image_url"] = get_location_image(entry["name"]+", "+entry["city"] + ", " + entry["state"])
-        
+                   
         return jsonify({"itinerary": output}), 200
 
     except Exception as e:

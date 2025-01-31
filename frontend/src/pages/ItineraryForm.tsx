@@ -23,7 +23,7 @@ interface IFormData {
 const ItineraryForm = () => {
   const navigate = useNavigate();
   const { state } = useAuth();
-  const [itinerariesId, setItinerariesId] = useState<string>("");
+  const [itineraryId, setItinerariesId] = useState<string>("");
   const [loader, setLoader] = useState(false);
   const [tag_array, setTag_array] = useState<number[]>([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -49,7 +49,7 @@ const ItineraryForm = () => {
     onSuccess: (data) => {
       console.log(data);
       setLoader(false);
-      navigate(`/itinerary/${itinerariesId}`);
+      navigate(`/itinerary/${itineraryId}`);
     },
     onError: (error: any) => {
       const errorMessage = error?.message || "Something went wrong!";
