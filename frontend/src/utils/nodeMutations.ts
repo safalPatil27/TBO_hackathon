@@ -166,3 +166,47 @@ export const displayHotels = async ({
     );
   }
 };
+
+
+export const joinItinerary = async ({link, bearer, userId, access}: {
+  link: string;
+  bearer: string;
+  userId: string;
+  access: string
+}) => {
+  try {
+    const response = await api.post(
+      `/api/v1/itinerary/join-itinerary/${link}`,
+      {
+        userId,
+        status: access
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${bearer}`,
+        },
+      }
+    );
+    return response;
+  } catch (error: any) {
+    
+    throw new Error(
+      error.response || "An unexpected error occurred"
+    );
+  }
+};
+
+export const getCurrentUser = async (bearer: string) => {
+  try {
+    const response = await api.get(`/api/v1/user/current-user`, {
+      headers: {
+        Authorization: `Bearer ${bearer}`,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "An unexpected error occurred"
+    );
+  }
+};

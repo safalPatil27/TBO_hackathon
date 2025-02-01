@@ -56,6 +56,7 @@ interface Itinerary {
   title: string;
   updatedAt: string;
   createdAt: string;
+  sharable_link?: string;
 }
 const Dashboard = () => {
   const { state, dispatch } = useAuth();
@@ -95,6 +96,20 @@ const Dashboard = () => {
       setItineraries(itinerary.data.data);
     }
   }, [itinerary, isLoading]);
+  const copyLink = async (link: string) => {
+    try {
+      
+      if(link){
+          await navigator.clipboard.writeText(link); // Copy the URL to the clipboard
+          toast.success("Link copied to clipboard!"); // Show success message
+      }else{
+        toast.error("Link not found");
+      }
+    } catch (error) {
+      console.error("Failed to copy link:", error);
+      toast.error("Failed to copy link. Please try again."); // Show error message
+    }
+  };
   return (
     <div className="flex bg-gradient-to-b from-sky-900 pt-32">
       <Sidebar />
@@ -132,6 +147,7 @@ const Dashboard = () => {
                   <th className="p-3">Budget</th>
                   <th className="p-3">Created At</th>
                   <th className="p-3">Last Updated</th>
+                  <th className="p-3">Sharable Link</th>
                   <th className="p-3">Delete</th>
                   <th className="p-3">Edit</th>
                 </tr>
@@ -145,6 +161,14 @@ const Dashboard = () => {
                     <td className="p-3">{itinerary.budget}</td>
                     <td className="p-3">{itinerary.createdAt}</td>
                     <td className="p-3">{itinerary.updatedAt}</td>
+                    <td className="p-3">
+                    <button
+    className="text-white py-2 px-4 rounded bg-green-600 transition duration-300 ease-in-out hover:bg-green-800"
+    onClick={()=> copyLink(itinerary?.sharable_link || "")}
+  >
+    Copy Link
+  </button>
+                       </td>
                     <td className="p-3">
                       <button
                         className="bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 text-white"

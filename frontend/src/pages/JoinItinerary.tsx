@@ -3,33 +3,87 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Circles } from 'react-loader-spinner';
 import { useAuth } from '../contexts/AuthUserContexts';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getCurrentUser, joinItinerary } from '../utils/nodeMutations';
+import { toast } from 'react-toastify';
+import { parseHtmlError } from '../utils/parseHTMLErrors';
 
 const JoinItinerary = () => {
   const { link } = useParams(); // Get the link from URL params
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [userId, setUserId] = useState('');
   const navigate = useNavigate();
   const { state } = useAuth(); // Use context to get the user state (e.g., token)
+  const token = state.user?.accessToken || "";
+  
+  const {
+    data, isLoading: isDataFetching
+  } = useQuery({
+    queryKey: ['itinerary', link],
+    queryFn: () => getCurrentUser(token),
+  })
+  const mutations = useMutation({
+    mutationFn: joinItinerary,
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("Itinerary joined successfully!");
+      setErrorMessage("");
+      setIsLoading(false);
+      navigate('/dashboard');
 
+    },
+    onError: (error: any) => {
+      console.log(error.json());
+      console.log("error", error);
+      
+      
+      const contentType = error.response.headers["content-type"];
+      console.log(contentType, "content type");
+      
+      if (contentType.includes("text/html")) {
+        const htmlResponse = error.response.data as string;
+        const errorMessage = parseHtmlError(htmlResponse); // Parse HTML to extract error message
+        toast.error(`API Error: ${errorMessage}`);
+        setIsLoading(false);
+        throw new Error(errorMessage);
+      } else if (contentType.includes("application/json")) {
+        // Handle JSON response
+        const jsonResponse = error.response.data as { error: { message: string } };
+        setIsLoading(false);
+        toast.error(`API Error: ${jsonResponse.error.message}`);
+        setErrorMessage(jsonResponse.error.message);
+        throw new Error(jsonResponse.error.message);
+      } else {
+        // Handle other response types
+        setIsLoading(false);
+        toast.error("API Error: Unknown error format");
+        setErrorMessage("Unknown error format");
+        throw new Error("Unknown error format");
+      }
+      
+      
+    } 
+    
+  })
+  useEffect(() => {
+    if(data){
+      console.log(data, "user data");
+      
+      setUserId(data.data.data._id);
+    }
+    console.log(userId);
+    
+  },[data, isDataFetching])
   useEffect(() => {
     const joinItinerary = async () => {
+      setIsLoading(true);
       try {
-        const token = state.user?.accessToken; // Assuming the token is stored in state.token
-        if (!token) {
-          setErrorMessage("User not authenticated");
+        if(!token){
+          setErrorMessage("Not able to join the itinerary! Please login");
           return;
-        }
-
-        const response = await axios.post(`http://localhost:8001/api/v1/itinerary/join-itinerary/${link}`, null, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Use the token in the Authorization header
-          },
-        });
-
-        if (response.status === 200) {
-          navigate('/dashboard'); // Redirect to dashboard on success
-        } else {
-          setErrorMessage("Not able to join the itinerary");
+        }else{
+          mutations.mutate({ link: link || "", bearer: token || "", userId, access: "edit" });
         }
       } catch (error) {
         setErrorMessage("Not able to join the itinerary");
@@ -39,7 +93,7 @@ const JoinItinerary = () => {
     };
 
     joinItinerary();
-  }, [link, state.user?.accessToken, navigate]);
+  }, [token, link, userId,data]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
