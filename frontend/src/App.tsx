@@ -35,7 +35,12 @@ function App() {
             />
             <Route
               path="/itinerary/:itineraryId"
-              element={<Itinerary title="Jaipur" />}
+              element={ 
+              <AuthenticatedWrapper>
+                <Itinerary title="Sample" />
+
+              </AuthenticatedWrapper>
+                }
             />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/weather" element={<Weather />} />

@@ -11,8 +11,9 @@ import {
   updateItemIds,
 } from "../utils/itineraryUtils";
 import ItineraryListItem from "./Itinerary/ItineraryListItem";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import HotelBookingForm from "./Itinerary/HotelBookingForm";
+import { Circles } from "react-loader-spinner";
 const socket = io("http://localhost:8001");
 
 interface ItineraryProps {
@@ -28,7 +29,7 @@ interface ItineraryInfo {
   permissions: { userId: string; access: string }[];
   title: string;
 }
-interface IHotel {
+export interface IHotel {
   countrycode: string;
   location: string;
   adults: number;
@@ -38,7 +39,7 @@ interface IHotel {
   end_date: string;
   No_of_rooms: number;
 }
-interface IHotels {
+export interface IHotels {
   Address: string;
   CityName: string;
   CountryCode: string;
@@ -47,18 +48,20 @@ interface IHotels {
   HotelCode: string;
   HotelName: string;
   HotelRating: string;
-  Latitude: string;
-  Longitude: string;
-  rooms: {
-    bookingCode: string;
-    inclusion: string;
-    isRefundable: boolean;
-    mealType: string;
-    name: string[];
-    roomPreparation: string;
-    totalFare: number;
-    totalTax: number;
-    withTransfers: boolean;
+  latitude: string;
+  longitude: string;
+  TotalFare?: number;
+  TotalTax?: number;
+  Rooms: {
+    BookingCode: string;
+    Inclusion: string;
+    IsRefundable: boolean;
+    MealType: string;
+    Name: string[];
+    RoomPreparation: string;
+    TotalFare: number;
+    TotalTax: number;
+    WithTransfers: boolean;
   }[];
 }
 
@@ -72,6 +75,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   const [currentItem, setCurrentItem] = useState<Item | null>(null);
   const [hotel, setHotel] = useState<IHotels | null>(null);
   const [fetchedHotels, setFetchedHotels] = useState<IHotels[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [openHotelModal, setOpenHotelModal] = useState(false);
   const [newDestination, setNewDestination] = useState<Item>({
     name: "",
@@ -115,7 +119,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
         permissions: initialData.itineraryInfo.permissions,
         title: initialData.itineraryInfo.title
       });
-      setHotel(initialData.itineraryInfo.hotels[0] || null);
+      setHotel(initialData.itineraryInfo.hotels[initialData.itineraryInfo.hotels.length - 1] || null);
       const itinerary = initialData.itineraryDestinations.map((day: Item[]) => {
         return sortItems(day).flat();
       });
@@ -137,6 +141,10 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
       setHotel(null);
     });
+    socket.on("savedData", (data) => {
+      console.log(data, "savedData");
+      
+    })
 
     return () => {
       socket.off("initialData");
@@ -264,16 +272,23 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   }
 
   const saveChanges = () => {
+    console.log(data, "data", hotel);
+    
     socket.emit("saveData", {
-      itinerary: data, itineraryId, hotels: hotel
+      itinerary: data, itineraryId, hotels: hotel, totalFare: hotel?.TotalFare || hotel?.Rooms[0].TotalFare || 0, totalTax: hotel?.TotalTax || hotel?.Rooms[0].TotalTax || 0
     });
+    
     toast.success("Itinerary saved successfully!");
   };
 
   useEffect(() => {
     console.log(data, "data \n");
     console.log(currentItem, "currentItem");
-  }, [data]);
+    console.log(hotel, "hotel");
+    
+    console.log(fetchedHotels, "fetchedHotels");
+    
+  }, [data, currentItem, fetchedHotels, hotel]);
 
 
   return (
@@ -297,20 +312,36 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
         ) : (
           <div className="flex justify-between gap-4">
-            <div>
+            <div className="bg-white text-black p-4 rounded-lg" >
               <h2 className="text-xl font-semibold mb-2">Hotel</h2>
               <div className="" >
-                <h4 className="text-lg font-semibold text-white">{hotel.HotelName}</h4>
-                <p className="text-white">{hotel.Address}</p>
-                <p className="text-white">{hotel.CityName}</p>
-                <p className="text-white">{hotel.CountryName}</p>
-                <p className="text-white">{hotel.HotelCode}</p>
-                <p className="text-white">{hotel.HotelRating}</p>
+                <h4 className="text-lg font-semibold ">{hotel.HotelName}</h4>
+                <p className="">{hotel.Address}</p>
+                <p className="">{hotel.CityName}</p>
+                <p className="">{hotel.CountryName}</p>
+                <p className="">{hotel.HotelCode}</p>
+                <p className="">{hotel.HotelRating}</p>
+                {hotel.Rooms &&(
+                  <div className="border border-gray-300 rounded-md p-2 mb-2 space-y-3">
+                    <p className="">Room Total Fare: {hotel.Rooms[0].TotalFare} {hotel.Currency}</p>
+                    <p className="">Room Total Tax: {hotel.Rooms[0].TotalTax} {hotel.Currency}</p>
+                  </div>
+                )}
+                {!hotel.Rooms && (
+                  <div  className="border border-gray-300 rounded-md p-2 mb-2 space-y-3">
+                        <p className="">Room Total Fare: {hotel.TotalFare} {hotel.Currency || "USD"}</p>
+                        <p className="">Room Total Tax: {hotel.TotalTax} {hotel.Currency || "USD"}</p>
+                      </div>
+                )
+
+                }
+                      
+                  <Link to={`https://www.google.com/maps/search/?api=1&query=${hotel.latitude},${hotel.longitude}`} target="_blank" rel="noopener noreferrer" className="my-4 hover:underline">View Hotel</Link>
               </div>
+              <button className=" text-white py-2 my-4 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800" onClick={removeHotel} >
+                Remove Hotel
+              </button>
             </div>
-            <button className=" text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800" onClick={removeHotel} >
-              Remove Hotel
-            </button>
           </div>
         )}
       </div>
@@ -625,15 +656,15 @@ const Itinerary: React.FC<ItineraryProps> = () => {
       )}
       {/* Add Hoyel Modal */}
       {openHotelModal && (
-        <HotelBookingForm openHotelModal={openHotelModal} closeModal={() => setOpenHotelModal(false)} setFetchedHotels={setFetchedHotels} />
+        <HotelBookingForm openHotelModal={openHotelModal} closeModal={() => setOpenHotelModal(false)} setFetchedHotels={setFetchedHotels} setIsLoading={setIsLoading} />
       )}
       {fetchedHotels && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="fixed min-w-screen inset-0  min-h-screen flex justify-center overflow-y-auto top-0 pt-10 bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 w-1/2 rounded-lg h-fit">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-4">
               Hotels
             </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 h-full">
               {fetchedHotels.map((hotel) => (
                 <div
                   key={hotel.HotelCode}
@@ -645,11 +676,36 @@ const Itinerary: React.FC<ItineraryProps> = () => {
                   <p className="text-gray-600">{hotel.CountryName}</p>
                   <p className="text-gray-600">{hotel.HotelCode}</p>
                   <p className="text-gray-600">{hotel.HotelRating}</p>
+                  <div className="mt-2" >
+                    {hotel.Rooms.map((room) => (
+                      <div key={room.BookingCode} className="border border-gray-300 rounded-md p-2 mb-2 space-y-3">
+                        <p className="text-gray-600">Room Name: {room.Name[0]}</p>
+                        <p className="text-gray-600">Room Meal Type: {room.MealType}</p>
+                        <p className="text-gray-600">Room Total Fare: {room.TotalFare} {hotel.Currency || "USD"}</p>
+                        <p className="text-gray-600">Room Total Tax: {room.TotalTax} {hotel.Currency || "USD"}</p>
+                      </div>
+                    ))}
+                  </div>
                   <button className="bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded" onClick={() => addHotel(hotel)} > Book</button>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="fixed inset-0  flex justify-center flex-col items-center bg-black bg-opacity-70 text-white z-50">
+          <Circles
+                    height="80"
+                    width="80"
+                    color="#fff"
+                    ariaLabel="circles-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                  We are fetching hotels for you.
         </div>
       )}
 

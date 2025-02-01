@@ -3,6 +3,8 @@ import { countryList } from "../../constants/data";
 import { useMutation } from "@tanstack/react-query";
 import { displayHotels } from "../../utils/nodeMutations";
 import { useAuth } from "../../contexts/AuthUserContexts";
+import { toast } from "react-toastify";
+import { IHotels } from "../Itinerary";
 
 interface IHotel {
     countrycode: string;
@@ -15,30 +17,8 @@ interface IHotel {
     No_of_rooms: number;
 }
 const starRatings = ["OneStar", "TwoStar", "ThreeStar", "FourStar", "FiveStar"];
-interface IHotels {
-    Address: string;
-    CityName: string;
-    CountryCode: string;
-    CountryName: string;
-    Currency: string;
-    HotelCode: string;
-    HotelName: string;
-    HotelRating: string;
-    Latitude: string;
-    Longitude: string;
-    rooms: {
-        bookingCode: string;
-        inclusion: string;
-        isRefundable: boolean;
-        mealType: string;
-        name: string[];
-        roomPreparation: string;
-        totalFare: number;
-        totalTax: number;
-        withTransfers: boolean;
-    }[];
-}
-const HotelBookingForm = ({ openHotelModal, closeModal, setFetchedHotels }: { openHotelModal: boolean; closeModal: () => void; addHotel?: (hotel: IHotel) => void; setFetchedHotels: (hotels: IHotels[]) => void }) => {
+
+const HotelBookingForm = ({ openHotelModal, closeModal, setFetchedHotels, setIsLoading }: { openHotelModal: boolean; closeModal: () => void; addHotel?: (hotel: IHotel) => void; setFetchedHotels: (hotels: IHotels[]) => void; setIsLoading: (isLoading: boolean) => void }) => {
     const [hotel, setHotel] = useState<IHotel>({
         countrycode: "",
         location: "",
@@ -54,11 +34,14 @@ const HotelBookingForm = ({ openHotelModal, closeModal, setFetchedHotels }: { op
     const displayHotelsMutation = useMutation({
         mutationFn: displayHotels,
         onSuccess: (data) => {
-            console.log("Hotel added successfully!", data);
+            console.log("Hotels Fetched successfully!", data);
             setFetchedHotels(data.data.data);
+            setIsLoading(false);
         },
         onError: (error: any) => {
             const errorMessage = error?.message || "Something went wrong!";
+            setIsLoading(false);
+            toast.error(errorMessage);
             console.log(errorMessage);
         },
     });
@@ -83,7 +66,7 @@ const HotelBookingForm = ({ openHotelModal, closeModal, setFetchedHotels }: { op
 
     const handleSubmit = () => {
         if (!hotel.countrycode || !hotel.location || !hotel.start_date || !hotel.end_date) return;
-
+        setIsLoading(true);
         displayHotelsMutation.mutate({
             data: hotel,
             bearer: state.user?.accessToken || "",

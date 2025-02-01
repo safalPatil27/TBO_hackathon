@@ -338,25 +338,32 @@ const socketConfig = (server) => {
             socket.broadcast.emit("hotelRemoved", data);
         });
         socket.on("saveData", async (updatedData) => {
-            const { itinerary, itineraryId, hotels } = updatedData;
-            console.log(itinerary, itineraryId);
-
+            const { itinerary, itineraryId, hotels, totalFare, totalTax } = updatedData;
+            console.log(itinerary, itineraryId, hotels);
             const data = await updateDestinations_to_Itinerary(itineraryId, itinerary);
-            const hotelAdd = await addHotel_to_Itinerary({
-                itineraryId,
-                HotelName: hotels.HotelName,
-                HotelRating: hotels.HotelRating,
-                Address: hotels.Address,
-                CountryName: hotels.CountryName,
-                CountryCode: hotels.CountryCode,
-                CityName: hotels.CityName,
-                TotalFare: hotels.Rooms[0].TotalFare,
-                TotalTax: hotels.Rooms[0].TotalTax,
-                startDate: new Date().toISOString().split("T")[0],
-                endDate: new Date().toISOString().split("T")[0] + 7,
+            if(hotels){
+                const hotelAdd = await addHotel_to_Itinerary({
+                    itineraryId,
+                    HotelName: hotels.HotelName, 
+                    HotelRating: hotels.HotelRating,
+                    Address: hotels.Address,
+                    CountryName: hotels.CountryName,
+                    CountryCode: hotels.CountryCode,
+                    CityName: hotels.CityName,
+                    TotalFare: totalFare,
+                    TotalTax: totalTax,
+                    latitude: hotels.Latitude,
+                    longitude: hotels.Longitude,
+                    startDate: new Date().toISOString().split("T")[0],
+                    endDate: new Date().toISOString().split("T")[0] + 7,
+                });
+                socket.broadcast.emit("savedData", { data, hotelAdd });
+            }else{
 
-            });
-            socket.broadcast.emit("savedData", { data, hotelAdd });
+                socket.broadcast.emit("savedData", { data, hotelAdd: null });
+
+            }
+           
         });
 
         socket.on("disconnect", () => {

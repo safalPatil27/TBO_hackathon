@@ -36,7 +36,7 @@ const Login = () => {
       dispatch({
         type: "LOGIN",
         payload: {
-          name: data.data.data.user.username,
+          username: data.data.data.user.username,
           email: data.data.data.user.email,
           accessToken: data.data.data.accessToken,
           refreshToken: data.data.data.refreshToken,

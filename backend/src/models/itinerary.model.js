@@ -92,6 +92,14 @@ const hotelSchema = new Schema({
     endDate: {
         type: Date,
         required: true
+    },
+    longitude: {
+        type: Number,
+        required: false
+    },
+    latitude: {
+        type: Number,
+        required: false
     }
   
 }, { _id: false });

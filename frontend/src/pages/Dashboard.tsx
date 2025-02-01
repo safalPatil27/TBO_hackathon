@@ -73,7 +73,6 @@ const Dashboard = () => {
     data: itinerary,
     isLoading,
     refetch,
-    error,
   } = useQuery({
     queryKey: ["GetItineraries"],
     queryFn: () => getItinerariesByUser(state.user?.accessToken || ""),
@@ -100,13 +99,13 @@ const Dashboard = () => {
     <div className="flex bg-gradient-to-b from-sky-900 pt-32">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Header user={state.user?.name || ""} handleLogout={hanldeLogout} />
+        <Header user={state.user?.username || ""} handleLogout={hanldeLogout} />
         <main className="p-6 space-y-6">
           <section className="bg-white p-6 rounded-lg">
             <h3 className="text-xl font-semibold mb-4">User Information</h3>
             <div className="space-y-2">
               <p>
-                <span className="font-bold">Name:</span> {state.user?.name}
+                <span className="font-bold">Name:</span> {state.user?.username}
               </p>
               <p>
                 <span className="font-bold">Email:</span> {state.user?.email}

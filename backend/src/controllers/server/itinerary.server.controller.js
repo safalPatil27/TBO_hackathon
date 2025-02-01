@@ -5,7 +5,8 @@ import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import axios from "axios";
-
+import { User } from "../../models/user.model.js";
+import {v4 as uuidv4} from "uuid";
 
 const findCodeByLocation = (location, cityList) => {
   const city = cityList.find((city) =>
@@ -32,7 +33,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
     permissions: [
       {
         userId: req.user._id,
-        type: "owner"
+        access: "owner"
       }
     ],
     budget
@@ -89,14 +90,14 @@ const display_hotel_to_Itinerary = asyncHandler(async (req, res) => {
   );
 
   if (!Citylist_json) {
-    throw new ApiError(500, "Something went wrong while getting hotels!")
+    throw new ApiError(500, "Something went wrong while getting hotels! Citylist")
   }
 
 
   const citycode = findCodeByLocation(location, Citylist_json.data.CityList);
 
   if (!citycode) {
-    throw new ApiError(500, "Something went wrong while getting hotels!")
+    throw new ApiError(500, "Something went wrong while getting hotels! Citycode")
   }
 
   console.log(citycode);
@@ -116,7 +117,7 @@ const display_hotel_to_Itinerary = asyncHandler(async (req, res) => {
 
 
   if (!Hotellist_json) {
-    throw new ApiError(500, "Something went wrong while getting hotels!")
+    throw new ApiError(500, "Something went wrong while getting hotels! Hotellist")
   }
   const filteredHotelCodes = Hotellist_json.data.Hotels.filter(hotel => hotel.HotelRating === star_rating).map(hotel => hotel.HotelCode);
   const hotelCodesString = filteredHotelCodes.join(',');
@@ -149,9 +150,10 @@ const display_hotel_to_Itinerary = asyncHandler(async (req, res) => {
   );
 
   const Hotel = response.data.HotelResult;
-
+  console.log(response.data, "response");
+  
   if (!Hotel) {
-    throw new ApiError(500, "Something went wrong while getting hotels!")
+    throw new ApiError(500,response.data.Status.Description || "Something went wrong while getting hotels!" )
   }
 
 

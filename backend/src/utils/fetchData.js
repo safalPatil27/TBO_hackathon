@@ -63,6 +63,7 @@ export const updateDestinations_to_Itinerary = async (itineraryId, itinerary) =>
     );
   }
 
+
   // Flatten the nested array (if itinerary is a 2D array)
   const destinations = itinerary.flat();
   const formattedDestinations = destinations.map((dest) => {
@@ -75,10 +76,8 @@ export const updateDestinations_to_Itinerary = async (itineraryId, itinerary) =>
       type,
       Date,
       airportWithin50kmRadius,
-      startTime,
-      endTime,
       costPerDay,
-      image_url,
+      banner,
     } = dest;
 
     return {
@@ -90,10 +89,8 @@ export const updateDestinations_to_Itinerary = async (itineraryId, itinerary) =>
       type,
       Date,
       airportWithin50kmRadius,
-      startTime,
-      endTime,
       costPerDay,
-      banner: image_url,
+      banner,
     };
   });
 
@@ -111,7 +108,7 @@ export const updateDestinations_to_Itinerary = async (itineraryId, itinerary) =>
     );
   }
 
-  return "Destinations updated successfully.";
+  return  "Destinations updated successfully.";
 };
 
 export const addHotel_to_Itinerary = async ({
@@ -124,12 +121,15 @@ export const addHotel_to_Itinerary = async ({
   TotalFare,
   TotalTax,
   startDate,
-  endDate
+  endDate,
+  longitude,
+  latitude
 }) => {
 
 
-
-  if (!itineraryId || !HotelName || !HotelRating || !Address || !CountryName || !CountryCode || !CityName || !TotalFare || !TotalTax || !startDate || !endDate) {
+  console.log(itineraryId, HotelName, HotelRating, Address, CountryName, CountryCode, CityName, TotalFare, TotalTax, startDate, endDate, longitude, latitude);
+  
+  if (!itineraryId || !HotelName || !HotelRating || !Address || !CountryName || !CountryCode || !CityName || !TotalFare || !TotalTax || !startDate || !endDate || !longitude || !latitude) {
     throw new ApiError(400, 'Missing required fields');
   }
 
@@ -149,6 +149,8 @@ export const addHotel_to_Itinerary = async ({
           TotalTax,
           startDate,
           endDate,
+          longitude,
+          latitude
         }
       }
     }
