@@ -1,5 +1,6 @@
 import api from "./api";
 interface User {
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -14,7 +15,7 @@ export const registerUser = async (user: User) => {
   try {
     const response = await api.post("/api/v1/user/register", {
       email: user.email,
-      username: user.email,
+      username: user.username,
       password: user.password,
     });
     return response;

@@ -5,6 +5,8 @@ import {uploadOnCloudinary} from "../../utils/cloudinary.js";
 import { ApiResponse } from  "../../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import axios from "axios";
+import { User } from "../../models/user.model.js";
+import {v4 as uuidv4} from "uuid";
 
 
 const findCodeByLocation = (location, cityList) => {
@@ -14,17 +16,21 @@ const findCodeByLocation = (location, cityList) => {
 
     return city ? city.Code : null;
 };
+
+
 const create_Itinerary = asyncHandler(async (req, res) => {
   const { title, location, days, budget } = req.body;
 
     if (!title || !location || !days || !budget) {
         throw new ApiError(400, 'Missing required fields');
     }
+    const shareableLink = `https:////localhost:${process.env.PORT|| 5173}/api/v1/itinerary/join-itinerary/${uuidv4()}`;
     const newItinerary = await Itinerary.create({
         userId: req.user._id,
         title,
         location: location.toLowerCase(),
         Days:days,
+        sharable_link : shareableLink,
         permissions: [
             {
                 userId: req.user._id,
@@ -34,6 +40,22 @@ const create_Itinerary = asyncHandler(async (req, res) => {
         budget
     });
 
+    const user = await User.findByIdAndUpdate(
+      req.user._id, 
+      {
+        $push: {
+          itineraries: {
+            itineraryId: newItinerary._id,
+            access: "owner"
+          }
+        }
+      },
+    );
+
+    if(!user) {
+        throw new ApiError(500, "Something went wrong while creating Itinerary!");
+      }
+    
 
   if (!newItinerary) {
     throw new ApiError(500, "Something went wrong while creating Itinerary!");
@@ -280,7 +302,6 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
     );
   }
 
-  // Flatten the nested array (if itinerary is a 2D array)
   const destinations = itinerary.flat();
   const formattedDestinations = destinations.map((dest) => {
     const {
@@ -292,8 +313,6 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       type,
       Date,
       airportWithin50kmRadius,
-      startTime,
-      endTime,
       costPerDay,
       image_url,
     } = dest;
@@ -307,19 +326,23 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       type,
       Date,
       airportWithin50kmRadius,
-      startTime,
-      endTime,
       costPerDay,
       banner: image_url,
     };
   });
 
-  // Perform a bulk update
   const updatedItinerary = await Itinerary.findByIdAndUpdate(
     itineraryId,
-    { $set: { destinations: formattedDestinations } }, // Set the entire destinations array
-    { new: true, upsert: true } // Return the updated document and create if not exists
+    {
+      $push: {
+        destinations: {
+          $each: formattedDestinations, 
+        },
+      },
+    },
+    { new: true, upsert: true }
   );
+  
 
   if (!updatedItinerary) {
     throw new ApiError(
@@ -398,7 +421,7 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 const getitinerary_by_user = asyncHandler(async (req, res) => {
     
     console.log(req?.user);
-    const itinerary = await Itinerary.find({ "userId": req?.user._id });
+    const itinerary = await Itinerary.find({ "permission.userId": req.user._id });
     if (!itinerary) {
         throw new ApiError(404, "Itinerary not found.");
     }
@@ -433,31 +456,41 @@ const delete_Itinerary = asyncHandler(async (req, res) => {
         )
 });
 
-const add_user_with_Status_Itinerary = asyncHandler(async (req, res) => {
-    const { userId, status } = req.body;
 
-    if (!userId || !status) {
-        throw new ApiError(400, "User ID and status are required.");
+const add_user_with_Status_Itinerary = asyncHandler(async (req, res) => {
+    const user_id = req.user._id;
+    const {link}  = req.params;
+
+    const itinerary = await Itinerary.findOne({ sharedLink: `https:////localhost:${process.env.HOST|| 5173}/api/v1/itinerary/join-itinerary/${link}` });
+
+    if (!itinerary) {
+      return res.status(404).json({ message: "Itinerary not found!" });
     }
 
-    // Convert userId string to ObjectId
-    const user_id = new mongoose.Types.ObjectId(userId);
+    const isUserInItinerary = itinerary.users.some(user => user.userId.toString() === userId);
+    if (!isUserInItinerary) {
+      itinerary.permissions.push({ user_id, access: "viewer" }); 
+      await itinerary.save();
+    }
 
-    // Update the itinerary by pushing to the permissions array
-    const updatedItinerary = await Itinerary.findOneAndUpdate(
-        { _id: req.params.itineraryId }, // Match the itinerary by its ID
-        { $push: { permissions: { userId: user_id, access: status } } }, // Push new permission
-        { new: true } // Return the updated document
+    const user = await User.findByIdAndUpdate(
+      user_id,
+      { 
+        $push: { 
+          itineraries: { itineraryId: itinerary._id, access: "edit" } 
+        } 
+      },
+      { new: true } 
     );
-
-    if (!updatedItinerary) {
-        throw new ApiError(404, "Itinerary not found.");
+    
+    if(!user){
+      return res.status(404).json({ message: "User not found!" });
     }
 
     return res.status(200).json(
         new ApiResponse(
             200,
-            updatedItinerary.permissions,
+            {},
             "User added to the itinerary with the specified status."
         )
     );

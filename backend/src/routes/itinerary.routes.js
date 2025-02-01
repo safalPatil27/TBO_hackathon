@@ -25,7 +25,7 @@ itineraryrouter.route('/getitinerary/:itineraryId').get(verifyJWT, getitinerary)
 itineraryrouter.route('/getitinerarybyuser').get(verifyJWT, getitinerary_by_user)
 itineraryrouter.route('/delete/:itineraryId').delete(verifyJWT, delete_Itinerary)
 itineraryrouter.route("/getDestinations_by_itinerary/:itineraryId").get(verifyJWT, getDestinations_by_itinerary)
-itineraryrouter.route("/adduserwithstatus/:itineraryId").post(verifyJWT, add_user_with_Status_Itinerary)
+itineraryrouter.route("/join-itinerary/:link").post(verifyJWT, add_user_with_Status_Itinerary)
 itineraryrouter.route("/getStatusofUserItinerary/:itineraryId/:userId").get( get_Status_of_User_Itinerary)
 
 

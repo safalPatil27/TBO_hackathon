@@ -2,7 +2,8 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { User } from "../../models/user.model.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import { Itinerary } from "../../models/itinerary.model.js";
 
 
 
@@ -214,11 +215,20 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 
 const getCurrentUser = asyncHandler(async (req, res) => {
+    const itinerary_info = req.user.itineraries;
+    const temp_user = req.user;
+
+    for (let i = 0; i < itinerary_info.length; i++) {
+        const element = itinerary_info[i];
+        const itinerary = await Itinerary.findById(element.id)
+        itinerary_info[i].itinerary = itinerary
+    }
+    temp_user.itineraries = itinerary_info;
     return res
         .status(200)
         .json(new ApiResponse(
             200,
-            req.user,
+            temp_user,
             "User fetched successfully"
         ))
 })

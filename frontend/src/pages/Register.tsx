@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../utils/register';
 interface IFormData {
+    username: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -73,16 +74,13 @@ const Register = () => {
                                 <input
                                     type="text"
                                     id="email"
-                                    {...register('email', {
-                                        required: 'Email is required',
-                                        pattern: {
-                                            message: 'Enter a valid email address',
-                                        },
+                                    {...register('username', {
+                                        required: 'Username is required',
                                     })}
                                     className={` border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5    ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                     placeholder="abc"
                                 />
-                                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
+                                {errors.username && <span className="text-red-500 text-sm">{errors.username.message}</span>}
                             </div>
 
                             {/* Email Field */}

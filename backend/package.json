@@ -27,6 +27,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.9",
     "openai": "^4.78.1",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "uuid": "^11.0.5"
   }
 }

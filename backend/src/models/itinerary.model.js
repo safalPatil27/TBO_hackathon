@@ -38,17 +38,9 @@ const destinationSchema = new Schema({
         type: Number,
         required: true // Matches the "day" field
     },
-    startTime: {
-        type: String,
-        required: false
-    },
-    endTime: {
-        type: String,
-        required: false
-    },
     banner: {
         type: String,
-        trim: true
+        required: true
     }
 });
 const hotelSchema = new Schema({
@@ -150,6 +142,10 @@ const itinerarySchema = new Schema({
     updatedAt: {
         type: Date,
         default: Date.now
+    },
+    sharable_link :{
+        type: String,
+        default:""
     },
     destinations: [destinationSchema],
     hotels: [hotelSchema],

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
 
 type User = {
-    name: string;
+    username: string;
     email: string;
     accessToken: string;
     refreshToken: string;

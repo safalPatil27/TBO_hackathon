@@ -32,7 +32,7 @@ const userSchema = new Schema({
         },
         type: {
             type: String,
-            enum: ["owner", "edit-only", "view-only"]
+            enum: ["owner", "edit", "view"]
         }
     }]
 });
