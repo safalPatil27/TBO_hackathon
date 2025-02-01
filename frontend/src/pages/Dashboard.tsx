@@ -46,7 +46,7 @@ const Header = ({
 };
 interface Itinerary {
   _id: string;
-  days: number;
+  Days: number;
   budget: number;
   location: string;
   permissions: { userId: string; access: string }[];
@@ -142,7 +142,7 @@ const Dashboard = () => {
                   <tr key={itinerary._id}>
                     <td className="p-3">{itinerary.title}</td>
                     <td className="p-3">{itinerary.location}</td>
-                    <td className="p-3">{itinerary.days}</td>
+                    <td className="p-3">{itinerary.Days}</td>
                     <td className="p-3">{itinerary.budget}</td>
                     <td className="p-3">{itinerary.createdAt}</td>
                     <td className="p-3">{itinerary.updatedAt}</td>
@@ -154,13 +154,13 @@ const Dashboard = () => {
                           bearer: state.user?.accessToken || ""
                         })}
                       >
-                        Delete  
+                        Delete
                       </button>
                     </td>
                     <td className="p-3">
                       <button
                         className="bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-600 text-white"
-                        onClick={ ()=> navigate(`/itinerary/${itinerary._id}`)}
+                        onClick={() => navigate(`/itinerary/${itinerary._id}`)}
                       >
                         Edit
                       </button>
