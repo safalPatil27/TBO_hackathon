@@ -1,61 +1,59 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import {ApiError} from  "../../utils/ApiError.js";
+import { ApiError } from "../../utils/ApiError.js";
 import { Itinerary } from "../../models/itinerary.model.js";
-import {uploadOnCloudinary} from "../../utils/cloudinary.js";
-import { ApiResponse } from  "../../utils/ApiResponse.js";
+import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import axios from "axios";
-import { User } from "../../models/user.model.js";
-import {v4 as uuidv4} from "uuid";
 
 
 const findCodeByLocation = (location, cityList) => {
-    const city = cityList.find((city) => 
-        city.Name.toLowerCase().includes(location.toLowerCase())
-    );
+  const city = cityList.find((city) =>
+    city.Name.toLowerCase().includes(location.toLowerCase())
+  );
 
-    return city ? city.Code : null;
+  return city ? city.Code : null;
 };
 
 
 const create_Itinerary = asyncHandler(async (req, res) => {
   const { title, location, days, budget } = req.body;
 
-    if (!title || !location || !days || !budget) {
-        throw new ApiError(400, 'Missing required fields');
-    }
-    const shareableLink = `https://localhost:${process.env.HOST|| 5173}/itinerary/join-itinerary/${uuidv4()}`;
-    const newItinerary = await Itinerary.create({
-        userId: req.user._id,
-        title,
-        location: location.toLowerCase(),
-        Days:days,
-        sharable_link : shareableLink,
-        permissions: [
-            {
-                userId: req.user._id,
-                type: "owner"
-            }
-        ],
-        budget
-    });
-
-    const user = await User.findByIdAndUpdate(
-      req.user._id, 
+  if (!title || !location || !days || !budget) {
+    throw new ApiError(400, 'Missing required fields');
+  }
+  const shareableLink = `https://localhost:${process.env.HOST || 5173}/itinerary/join-itinerary/${uuidv4()}`;
+  const newItinerary = await Itinerary.create({
+    userId: req.user._id,
+    title,
+    location: location.toLowerCase(),
+    Days: days,
+    sharable_link: shareableLink,
+    permissions: [
       {
-        $push: {
-          itineraries: {
-            itineraryId: newItinerary._id,
-            access: "owner"
-          }
-        }
-      },
-    );
-
-    if(!user) {
-        throw new ApiError(500, "Something went wrong while creating Itinerary!");
+        userId: req.user._id,
+        type: "owner"
       }
-    
+    ],
+    budget
+  });
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $push: {
+        itineraries: {
+          itineraryId: newItinerary._id,
+          access: "owner"
+        }
+      }
+    },
+  );
+
+  if (!user) {
+    throw new ApiError(500, "Something went wrong while creating Itinerary!");
+  }
+
 
   if (!newItinerary) {
     throw new ApiError(500, "Something went wrong while creating Itinerary!");
@@ -68,170 +66,172 @@ const create_Itinerary = asyncHandler(async (req, res) => {
 });
 
 const display_hotel_to_Itinerary = asyncHandler(async (req, res) => {
-    const { countrycode, location, adults,children, star_rating, start_date, end_date,No_of_rooms } = req.body;
+  const { countrycode, location, adults, children, star_rating, start_date, end_date, No_of_rooms } = req.body;
 
-    if (!countrycode || !star_rating || !adults || !location || !start_date || !end_date || !No_of_rooms) {
-            throw new ApiError(400, 'Missing required fields');
-        }
-    const children_ages = new Array(children).fill(0);
-    const username  = "hackathontest";
-    const password = "Hac@98910186";
+  if (!countrycode || !star_rating || !adults || !location || !start_date || !end_date || !No_of_rooms) {
+    throw new ApiError(400, 'Missing required fields');
+  }
+  const children_ages = new Array(children).fill(0);
+  const username = "hackathontest";
+  const password = "Hac@98910186";
 
-    const Citylist_json = await axios.post(
-        "http://api.tbotechnology.in/TBOHolidays_HotelAPI/Citylist",
-        {
-          CountryCode: countrycode,
-        },
-        {
-          auth: {
-            username: username, 
-            password: password, 
-          },
-        }
-      );
-      
-    if (!Citylist_json) {
-        throw new ApiError(500, "Something went wrong while getting hotels!")
+  const Citylist_json = await axios.post(
+    "http://api.tbotechnology.in/TBOHolidays_HotelAPI/Citylist",
+    {
+      CountryCode: countrycode,
+    },
+    {
+      auth: {
+        username: username,
+        password: password,
+      },
     }
+  );
 
-    
-    const citycode = findCodeByLocation(location, Citylist_json.data.CityList);
+  if (!Citylist_json) {
+    throw new ApiError(500, "Something went wrong while getting hotels!")
+  }
 
-    if(!citycode) {
-        throw new ApiError(500, "Something went wrong while getting hotels!")
+
+  const citycode = findCodeByLocation(location, Citylist_json.data.CityList);
+
+  if (!citycode) {
+    throw new ApiError(500, "Something went wrong while getting hotels!")
+  }
+
+  console.log(citycode);
+
+  const Hotellist_json = await axios.post(
+    "http://api.tbotechnology.in/TBOHolidays_HotelAPI/TBOHotelCodeList",
+    {
+      CityCode: citycode, // Request body payload
+    },
+    {
+      auth: {
+        username: username,
+        password: password,
+      },
     }
+  );
 
-    console.log(citycode);
 
-    const Hotellist_json = await axios.post(
-        "http://api.tbotechnology.in/TBOHolidays_HotelAPI/TBOHotelCodeList",
+  if (!Hotellist_json) {
+    throw new ApiError(500, "Something went wrong while getting hotels!")
+  }
+  const filteredHotelCodes = Hotellist_json.data.Hotels.filter(hotel => hotel.HotelRating === star_rating).map(hotel => hotel.HotelCode);
+  const hotelCodesString = filteredHotelCodes.join(',');
+
+  const response = await axios.post(
+    "http://api.tbotechnology.in/TBOHolidays_HotelAPI/search",
+    {
+      CheckIn: start_date,
+      CheckOut: end_date,
+      GuestNationality: "IN",
+      PaxRooms: [
         {
-          CityCode: citycode, // Request body payload
-        },
-        {
-          auth: {
-            username: username, 
-            password: password, 
-          },
-        }
-      );
-      
-
-    if (!Hotellist_json) {
-        throw new ApiError(500, "Something went wrong while getting hotels!")
+          "Adults": adults,
+          "Children": children,
+          "ChildrenAges": children_ages
+        }],
+      HotelCodes: hotelCodesString,
+      Filters: {
+        "Refundable": false,
+        "NoOfRooms": No_of_rooms,
+        "MealType": "All"
+      }
+    },
+    {
+      auth: {
+        username: username, // Basic Auth Username
+        password: password, // Basic Auth Password
+      },
     }
-    const filteredHotelCodes = Hotellist_json.data.Hotels.filter(hotel => hotel.HotelRating === star_rating).map(hotel => hotel.HotelCode);
-    const hotelCodesString = filteredHotelCodes.join(',');
- 
-    const response = await axios.post(
-        "http://api.tbotechnology.in/TBOHolidays_HotelAPI/search",
-        {
-            CheckIn: start_date,
-            CheckOut: end_date,
-            GuestNationality: "IN",
-            PaxRooms: [
-            {
-                "Adults": adults,
-                "Children": children,
-                "ChildrenAges": children_ages
-            }],
-            HotelCodes: hotelCodesString,
-            Filters: {
-                "Refundable": false,
-                "NoOfRooms": No_of_rooms,
-                "MealType": "All"
-            }
-        },
-        {
-            auth: {
-            username: username, // Basic Auth Username
-            password: password, // Basic Auth Password
-            },
-        }
-        );
+  );
 
-    const Hotel = response.data.HotelResult;
+  const Hotel = response.data.HotelResult;
 
-    if (!Hotel) {
-        throw new ApiError(500, "Something went wrong while getting hotels!")
+  if (!Hotel) {
+    throw new ApiError(500, "Something went wrong while getting hotels!")
+  }
+
+
+  const updatedResult = Hotel.map(item => {
+    const hotel = Hotellist_json.data.Hotels.find(h => h.HotelCode === item.HotelCode);
+    if (hotel) {
+      return { ...item, ...hotel };
     }
+  });
 
-
-    const updatedResult = Hotel.map(item => {
-        const hotel = Hotellist_json.data.Hotels.find(h => h.HotelCode === item.HotelCode);
-        if (hotel) {
-          return { ...item, ...hotel }; 
-        } 
-      });
-
-    return res.status(201).json(
-        new ApiResponse(
-        200, 
-        updatedResult,
-        response.data.Message
-        )
+  return res.status(201).json(
+    new ApiResponse(
+      200,
+      updatedResult,
+      response.data.Message
     )
+  )
 
 });
 
 
 const addHotel_to_Itinerary = asyncHandler(async (req, res) => {
-    const { itineraryId, HotelName,
-        HotelRating,
-        Address,
-        CountryName,
-        CountryCode,
-        CityName,
-        TotalFare,
-        TotalTax,
-        startDate,
-        endDate,
-    } = req.body;
-   
-
-    if (!itineraryId || !HotelName || !HotelRating || !Address || !CountryName || !CountryCode || !CityName || !TotalFare || !TotalTax || !startDate || !endDate) {
-        throw new ApiError(400, 'Missing required fields');
-    }
+  const { itineraryId, HotelName,
+    HotelRating,
+    Address,
+    CountryName,
+    CountryCode,
+    CityName,
+    TotalFare,
+    TotalTax,
+    startDate,
+    endDate,
+  } = req.body;
 
 
-    const newHotel = await Itinerary.findByIdAndUpdate(
-        itineraryId,
-        {
-            $push: {
-                hotels: {
-                    HotelName,
-                    HotelRating,
-                    Address,
-                    CountryName,
-                    CountryCode,
-                    CityName,
-                    TotalFare,
-                    TotalTax,
-                    startDate,
-                    endDate,
-                }
-            }
+  if (!itineraryId || !HotelName || !HotelRating || !Address || !CountryName || !CountryCode || !CityName || !TotalFare || !TotalTax || !startDate || !endDate) {
+    throw new ApiError(400, 'Missing required fields');
+  }
+
+
+  const newHotel = await Itinerary.findByIdAndUpdate(
+    itineraryId,
+    {
+      $push: {
+        hotels: {
+          HotelName,
+          HotelRating,
+          Address,
+          CountryName,
+          CountryCode,
+          CityName,
+          TotalFare,
+          TotalTax,
+          startDate,
+          endDate,
         }
-    );
-
-    if (!newHotel) {
-        throw new ApiError(500, "Something went wrong while adding hotel!");
+      }
     }
+  );
 
-    return res.status(201).json(
-        new ApiResponse(
-            200,
-            {},
-            "Hotel added Successfully"
-        )
-    );
+  if (!newHotel) {
+    throw new ApiError(500, "Something went wrong while adding hotel!");
+  }
+
+  return res.status(201).json(
+    new ApiResponse(
+      200,
+      {},
+      200,
+      {},
+      "Hotel added Successfully"
+    )
+  );
 });
 
 
 const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
   const { itineraryId, itinerary } = req.body;
   console.log(req.body);
-  
+
   if (!itineraryId || !itinerary || !Array.isArray(itinerary)) {
     throw new ApiError(
       400,
@@ -270,7 +270,7 @@ const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
       startTime,
       endTime,
       costPerDay,
-      banner:image_url,
+      banner: image_url,
     };
   });
 
@@ -301,7 +301,8 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       "Itinerary ID and an array of destinations are required."
     );
   }
-  console.log("This is itinerary",itinerary);
+
+  // Flatten the nested array (if itinerary is a 2D array)
   const destinations = itinerary.flat();
   const formattedDestinations = destinations.map((dest) => {
     const {
@@ -335,16 +336,9 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
 
   const updatedItinerary = await Itinerary.findByIdAndUpdate(
     itineraryId,
-    {
-      $push: {
-        destinations: {
-          $each: formattedDestinations, 
-        },
-      },
-    },
-    { new: true, upsert: true }
+    { $set: { destinations: formattedDestinations } }, // Set the entire destinations array
+    { new: true, upsert: true } // Return the updated document and create if not exists
   );
-  
 
   if (!updatedItinerary) {
     throw new ApiError(
@@ -422,11 +416,11 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 
 const getitinerary_by_user = asyncHandler(async (req, res) => {
 
-    const itinerary = await Itinerary.find({ "permissions.userId": req.user._id.toString() });
-    console.log(itinerary);
-    if (!itinerary) {
-        throw new ApiError(404, "Itinerary not found.");
-    }
+  console.log(req?.user);
+  const itinerary = await Itinerary.find({ "userId": req?.user._id });
+  if (!itinerary) {
+    throw new ApiError(404, "Itinerary not found.");
+  }
 
   return res
     .status(200)
@@ -447,58 +441,46 @@ const delete_Itinerary = asyncHandler(async (req, res) => {
 
   await Itinerary.findByIdAndDelete(itineraryId);
 
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                {},
-                "Itinerary deleted successfully."
-            )
-        )
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        {},
+        "Itinerary deleted successfully."
+      )
+    )
 });
 
 
 const add_user_with_Status_Itinerary = asyncHandler(async (req, res) => {
-    const user_id = req.user._id;
-    const {link}  = req.params;
-    const itinerary = await Itinerary.findOne({ sharable_link: `http://localhost:${process.env.HOST || 5173}/itinerary/join-itinerary/${link}` });
-    
-    console.log(itinerary)
-    if (!itinerary) {
-      throw new ApiError(404, "Itinerary not found.");
-    }
+  const { userId, status } = req.body;
 
-    const isUserInItinerary = itinerary.permissions.some(user => user.userId.toString() === user_id);
-    if (!isUserInItinerary) {
-      itinerary.permissions.push({ userId: user_id, access: "edit" }); 
-      await itinerary.save();
-    }
-    else{
-      throw new ApiError(404, "User not found."); 
-    }
+  if (!userId || !status) {
+    throw new ApiError(400, "User ID and status are required.");
+  }
 
-    const user = await User.findByIdAndUpdate(
-      user_id,
-      { 
-        $push: { 
-          itineraries: { itineraryId: itinerary._id, type: "edit" } 
-        } 
-      },
-      { new: true } 
-    );
-    
-    if(!user){
-      throw new ApiError(404, "Error in User-accessing");
-    }
+  // Convert userId string to ObjectId
+  const user_id = new mongoose.Types.ObjectId(userId);
 
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {},
-            "User added to the itinerary with the specified status."
-        )
-    );
+  // Update the itinerary by pushing to the permissions array
+  const updatedItinerary = await Itinerary.findOneAndUpdate(
+    { _id: req.params.itineraryId }, // Match the itinerary by its ID
+    { $push: { permissions: { userId: user_id, access: status } } }, // Push new permission
+    { new: true } // Return the updated document
+  );
+
+  if (!updatedItinerary) {
+    throw new ApiError(404, "Itinerary not found.");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {},
+      "User added to the itinerary with the specified status."
+    )
+  );
 });
 
 const get_Status_of_User_Itinerary = asyncHandler(async (req, res) => {
@@ -530,15 +512,15 @@ const get_Status_of_User_Itinerary = asyncHandler(async (req, res) => {
 });
 
 export {
-    create_Itinerary,
-    addHotel_to_Itinerary,
-    addDestination_to_Itinerary,
-    updateDestinations_to_Itinerary,
-    getitinerary,
-    getitinerary_by_user,
-    getDestinations_by_itinerary,
-    delete_Itinerary,
-    add_user_with_Status_Itinerary,
-    get_Status_of_User_Itinerary,
-    display_hotel_to_Itinerary
+  create_Itinerary,
+  addHotel_to_Itinerary,
+  addDestination_to_Itinerary,
+  updateDestinations_to_Itinerary,
+  getitinerary,
+  getitinerary_by_user,
+  getDestinations_by_itinerary,
+  delete_Itinerary,
+  add_user_with_Status_Itinerary,
+  get_Status_of_User_Itinerary,
+  display_hotel_to_Itinerary
 }

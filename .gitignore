@@ -3,3 +3,4 @@ archive/node_modules
 backend/.env
 flask-backend/.env
 flask-backend/myenv
+flask-backend/venv

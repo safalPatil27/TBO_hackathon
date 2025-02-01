@@ -64,7 +64,7 @@ export const addDestinationToItinerary = async ({
   bearer: string;
 }) => {
   console.log(data, itineraryId, bearer, "data");
-  
+
   try {
     const response = await api.post(
       `/api/v1/itinerary/addDestination/`,
@@ -114,7 +114,52 @@ export const deleteItinerary = async ({
         Authorization: `Bearer ${bearer}`,
       },
     });
-    return {response, id};
+    return { response, id };
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "An unexpected error occurred"
+    );
+  }
+};
+
+interface Hotel {
+  countrycode: string;
+  location: string;
+  adults: number;
+  children: number;
+  star_rating: string;
+  start_date: string;
+  end_date: string;
+  No_of_rooms: number;
+}
+
+export const displayHotels = async ({
+  data,
+  bearer,
+}: {
+  data: Hotel;
+  bearer: string;
+}) => {
+  try {
+    const response = await api.post(
+      `/api/v1/itinerary/displayHotel/`,
+      {
+        countrycode: data.countrycode,
+        location: data.location,
+        adults: data.adults,
+        children: data.children,
+        star_rating: data.star_rating,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        No_of_rooms: data.No_of_rooms,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${bearer}`,
+        },
+      }
+    );
+    return response;
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message || "An unexpected error occurred"

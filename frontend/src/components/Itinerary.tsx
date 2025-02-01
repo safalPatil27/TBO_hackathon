@@ -12,6 +12,7 @@ import {
 } from "../utils/itineraryUtils";
 import ItineraryListItem from "./Itinerary/ItineraryListItem";
 import { useParams } from "react-router-dom";
+import HotelBookingForm from "./Itinerary/HotelBookingForm";
 const socket = io("http://localhost:8001");
 
 interface ItineraryProps {
@@ -19,13 +20,46 @@ interface ItineraryProps {
 }
 
 type ItineraryData = Item[][];
-interface ItineraryInfo{
+interface ItineraryInfo {
   _id: string;
   days: number;
   budget: number;
   location: string;
   permissions: { userId: string; access: string }[];
   title: string;
+}
+interface IHotel {
+  countrycode: string;
+  location: string;
+  adults: number;
+  children: number;
+  star_rating: string;
+  start_date: string;
+  end_date: string;
+  No_of_rooms: number;
+}
+interface IHotels {
+  Address: string;
+  CityName: string;
+  CountryCode: string;
+  CountryName: string;
+  Currency: string;
+  HotelCode: string;
+  HotelName: string;
+  HotelRating: string;
+  Latitude: string;
+  Longitude: string;
+  rooms: {
+    bookingCode: string;
+    inclusion: string;
+    isRefundable: boolean;
+    mealType: string;
+    name: string[];
+    roomPreparation: string;
+    totalFare: number;
+    totalTax: number;
+    withTransfers: boolean;
+  }[];
 }
 
 const Itinerary: React.FC<ItineraryProps> = () => {
@@ -36,6 +70,9 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [dayIndex, setDayIndex] = useState(0);
   const [currentItem, setCurrentItem] = useState<Item | null>(null);
+  const [hotel, setHotel] = useState<IHotels | null>(null);
+  const [fetchedHotels, setFetchedHotels] = useState<IHotels[] | null>(null);
+  const [openHotelModal, setOpenHotelModal] = useState(false);
   const [newDestination, setNewDestination] = useState<Item>({
     name: "",
     significance: "Sample significance text", // Default significance
@@ -77,17 +114,28 @@ const Itinerary: React.FC<ItineraryProps> = () => {
         location: initialData.itineraryInfo.location,
         permissions: initialData.itineraryInfo.permissions,
         title: initialData.itineraryInfo.title
-      })
-      const itinerary =  initialData.itineraryDestinations.map((day: Item[]) => {
+      });
+      setHotel(initialData.itineraryInfo.hotels[0] || null);
+      const itinerary = initialData.itineraryDestinations.map((day: Item[]) => {
         return sortItems(day).flat();
       });
       console.log(itinerary, "initialData");
-      
+
       setData(itinerary);
     });
 
     socket.on("updatedData", (updatedData) => {
       setData(updatedData);
+    });
+    socket.on("hotelAdded", (hotel) => {
+      console.log(hotel, "hotel");
+
+      setHotel(hotel);
+    });
+    socket.on("hotelRemoved", () => {
+      console.log("hotel removed");
+
+      setHotel(null);
     });
 
     return () => {
@@ -135,7 +183,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
     ).length;
 
     // If the day has space for a location or restaurant
-    if (placeType !="Restaurant" && locationCount < MAX_LOCATIONS_PER_DAY) {
+    if (placeType != "Restaurant" && locationCount < MAX_LOCATIONS_PER_DAY) {
       const newItem: Item = {
         ...newDestination,
         id: Date.now(), // Assign a unique id for the new item
@@ -201,9 +249,23 @@ const Itinerary: React.FC<ItineraryProps> = () => {
     closeRemoveModal();
   };
 
+  const addHotel = (hotel: IHotels) => {
+
+    setFetchedHotels(null);
+    setHotel(hotel);
+    socket.emit("addHotel", { data: hotel })
+  }
+
+  const removeHotel = () => {
+
+    setFetchedHotels(null);
+    setHotel(null);
+    socket.emit("removeHotel", hotel)
+  }
+
   const saveChanges = () => {
     socket.emit("saveData", {
-      itinerary: data, itineraryId
+      itinerary: data, itineraryId, hotels: hotel
     });
     toast.success("Itinerary saved successfully!");
   };
@@ -212,7 +274,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
     console.log(data, "data \n");
     console.log(currentItem, "currentItem");
   }, [data]);
-  
+
 
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-sky-900 p-4 text-white pt-32">
@@ -226,6 +288,31 @@ const Itinerary: React.FC<ItineraryProps> = () => {
         >
           Save Itinerary
         </button>
+      </div>
+      <div className="s" >
+        {!hotel ? (
+          <button className=" text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800" onClick={() => setOpenHotelModal(true)} >
+            Add Hotel
+          </button>
+
+        ) : (
+          <div className="flex justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Hotel</h2>
+              <div className="" >
+                <h4 className="text-lg font-semibold text-white">{hotel.HotelName}</h4>
+                <p className="text-white">{hotel.Address}</p>
+                <p className="text-white">{hotel.CityName}</p>
+                <p className="text-white">{hotel.CountryName}</p>
+                <p className="text-white">{hotel.HotelCode}</p>
+                <p className="text-white">{hotel.HotelRating}</p>
+              </div>
+            </div>
+            <button className=" text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800" onClick={removeHotel} >
+              Remove Hotel
+            </button>
+          </div>
+        )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -245,12 +332,11 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
                     {/* Add Button */}
                     <button
-                      className={`mb-4 bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded ${
-                        day.length >=
+                      className={`mb-4 bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded ${day.length >=
                         MAX_LOCATIONS_PER_DAY + MAX_RESTAURANTS_PER_DAY
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                        }`}
                       onClick={() => openAddModal(dayIndex)}
                       disabled={
                         day.length >=
@@ -262,9 +348,9 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
                     {updatedDayItems.map((item, index) => (
                       <Draggable
-                      key={item.id || `${item.name}-${index}`}
-                      draggableId={`${item.id || item.name}-${dayIndex}`}
-                      index={index}
+                        key={item.id || `${item.name}-${index}`}
+                        draggableId={`${item.id || item.name}-${dayIndex}`}
+                        index={index}
                       >
                         {(provided) => (
                           <div
@@ -311,12 +397,12 @@ const Itinerary: React.FC<ItineraryProps> = () => {
                 <option value="">Select Place Type</option>
                 {data[dayIndex].filter((item) => item.type != "Restaurant").length <
                   MAX_LOCATIONS_PER_DAY && (
-                  <option value="destination">Destination</option>
-                )}
+                    <option value="destination">Destination</option>
+                  )}
                 {data[dayIndex].filter((item) => item.type === "Restaurant").length <
                   MAX_RESTAURANTS_PER_DAY && (
-                  <option value="restaurant">Restaurant</option>
-                )}
+                    <option value="restaurant">Restaurant</option>
+                  )}
               </select>
             </div>
 
@@ -494,11 +580,10 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
             <div className="flex justify-between">
               <button
-                className={`bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded ${
-                  newDestination.name === ""
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
+                className={`bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded ${newDestination.name === ""
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+                  }`}
                 onClick={() => addNewDestination(dayIndex)}
               >
                 Add
@@ -538,6 +623,36 @@ const Itinerary: React.FC<ItineraryProps> = () => {
           </div>
         </div>
       )}
+      {/* Add Hoyel Modal */}
+      {openHotelModal && (
+        <HotelBookingForm openHotelModal={openHotelModal} closeModal={() => setOpenHotelModal(false)} setFetchedHotels={setFetchedHotels} />
+      )}
+      {fetchedHotels && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Hotels
+            </h3>
+            <div className="flex flex-col gap-2">
+              {fetchedHotels.map((hotel) => (
+                <div
+                  key={hotel.HotelCode}
+                  className="bg-gray-100 rounded-md p-2 mb-2 border border-gray-300 relative"
+                >
+                  <h4 className="text-lg font-semibold text-gray-800">{hotel.HotelName}</h4>
+                  <p className="text-gray-600">{hotel.Address}</p>
+                  <p className="text-gray-600">{hotel.CityName}</p>
+                  <p className="text-gray-600">{hotel.CountryName}</p>
+                  <p className="text-gray-600">{hotel.HotelCode}</p>
+                  <p className="text-gray-600">{hotel.HotelRating}</p>
+                  <button className="bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800 text-white py-2 px-4 rounded" onClick={() => addHotel(hotel)} > Book</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
