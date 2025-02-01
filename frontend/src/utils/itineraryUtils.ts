@@ -17,6 +17,7 @@ export interface Item {
   type?: string; // e.g., 'temple', 'fort', 'beach'
   costPerDay?: number;
   banner?: string;
+  distance?: number;
 }
 export const updateItemIds = (dayItems: Item[]) => {
   return dayItems.map((item) => {

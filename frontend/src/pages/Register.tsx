@@ -17,7 +17,7 @@ interface IFormData {
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { state } = useAuth();
+    const { state, dispatch } = useAuth();
     const navigate = useNavigate();
     useEffect(() => {
         if (state.isAuthenticated) {
@@ -39,11 +39,25 @@ const Register = () => {
         mutation.mutate(data, {
             onSuccess: (data) => {
                 console.log('Account created successfully!', data);
-
+                localStorage.setItem('accessToken', data.data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.data.refreshToken);
+                localStorage.setItem('email', data.data.data.email);
+                localStorage.setItem('username', data.data.data.username);
+                dispatch({
+                    type: "LOGIN",
+                    payload: {
+                        username: data.data.data.username,
+                        email: data.data.data.email,
+                        accessToken: data.data.accessToken,
+                        refreshToken: data.data.refreshToken,
+                    }
+                })
                 toast.success("Account created successfully!");
             },
             onError: (error: any) => {
                 const errorMessage = error?.message || "Something went wrong!";
+                console.log(errorMessage);
+
                 toast.error(errorMessage);
             },
         });
@@ -68,18 +82,19 @@ const Register = () => {
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             {/* Username */}
                             <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-white ">
-                                    Username 
+                                <label htmlFor="username" className="block mb-2 text-sm font-medium text-white ">
+                                    Username
                                 </label>
                                 <input
                                     type="text"
-                                    id="email"
+                                    id="username"
                                     {...register('username', {
                                         required: 'Username is required',
                                     })}
                                     className={` border text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5    ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                     placeholder="abc"
                                 />
+                                {errors.username && <span className="text-red-500 text-sm">{errors.username.message}</span>}
                                 {errors.username && <span className="text-red-500 text-sm">{errors.username.message}</span>}
                             </div>
 
