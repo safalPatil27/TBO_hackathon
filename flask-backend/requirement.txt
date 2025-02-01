@@ -1,0 +1,6 @@
+Flask
+numpy
+pickle-mixin
+openai
+python-dotenv
+requests
