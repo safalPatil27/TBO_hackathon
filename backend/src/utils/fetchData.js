@@ -63,7 +63,6 @@ export const getitinerary = async (itineraryId) => {
       );
     }
 
-    console.log(itinerary);
   
     // Flatten the nested array (if itinerary is a 2D array)
     const destinations = itinerary.flat();
