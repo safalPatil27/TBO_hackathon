@@ -77,6 +77,8 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   const [fetchedHotels, setFetchedHotels] = useState<IHotels[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [openHotelModal, setOpenHotelModal] = useState(false);
+  const [totalBudget, setTotalBudget] = useState<number>(0); // Total budget for the itinerary
+const [amountSpent, setAmountSpent] = useState<number>(0); // Amount spent so far
   const [newDestination, setNewDestination] = useState<Item>({
     name: "",
     significance: "Sample significance text", // Default significance
@@ -117,15 +119,24 @@ const Itinerary: React.FC<ItineraryProps> = () => {
         budget: initialData.itineraryInfo.budget,
         location: initialData.itineraryInfo.location,
         permissions: initialData.itineraryInfo.permissions,
-        title: initialData.itineraryInfo.title
+        title: initialData.itineraryInfo.title,
       });
+      setTotalBudget(initialData.itineraryInfo.budget); // Initialize total budget
       setHotel(initialData.itineraryInfo.hotels[initialData.itineraryInfo.hotels.length - 1] || null);
       const itinerary = initialData.itineraryDestinations.map((day: Item[]) => {
         return sortItems(day).flat();
       });
-      console.log(itinerary, "initialData");
-
       setData(itinerary);
+  
+      // Calculate initial amount spent
+      const initialSpent = itinerary.flat().reduce((sum: number, item: Item) => sum + (item.costPerDay || 0), 0);
+      if (initialData.itineraryInfo.hotels.length > 0) {
+        const hotel = initialData.itineraryInfo.hotels[initialData.itineraryInfo.hotels.length - 1];
+        const hotelCost = hotel.TotalFare || hotel.Rooms[0].TotalFare || 0;
+        setAmountSpent(initialSpent + hotelCost);
+      } else {
+        setAmountSpent(initialSpent);
+      }
     });
 
     socket.on("updatedData", (updatedData) => {
@@ -184,66 +195,51 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
   const addNewDestination = (dayIndex: number) => {
     const day = data[dayIndex];
-
-    const locationCount = day.filter((item) => item.type != "Restaurant").length;
-    const restaurantCount = day.filter(
-      (item) => item.type === "Restaurant"
-    ).length;
-
-    // If the day has space for a location or restaurant
-    if (placeType != "Restaurant" && locationCount < MAX_LOCATIONS_PER_DAY) {
+  
+    const locationCount = day.filter((item) => item.type !== "Restaurant").length;
+    const restaurantCount = day.filter((item) => item.type === "Restaurant").length;
+  
+    if (placeType !== "Restaurant" && locationCount < MAX_LOCATIONS_PER_DAY) {
       const newItem: Item = {
         ...newDestination,
-        id: Date.now(), // Assign a unique id for the new item
+        id: Date.now(),
+        costPerDay: newDestination.costPerDay || 0, // Ensure cost is included
       };
-
+  
       const updatedDay = [...day, newItem];
       const updatedData = [...data];
-      updatedData[dayIndex] = updateItemIds(updatedDay); // Update ids
-
-      // Sort the day items after addition
-      updatedData[dayIndex] = updatedData[dayIndex].sort((a, b) => {
-        if (a.id && !b.id) return -1;
-        if (!a.id && b.id) return 1;
-        return 0;
-      });
-
+      updatedData[dayIndex] = updateItemIds(updatedDay);
+  
       setData(updatedData);
+      setAmountSpent(amountSpent + (newItem.costPerDay || 0)); // Update amount spent
       socket.emit("updateData", updatedData);
-      closeAddModal(); // Close the modal after adding the destination
-    } else if (
-      placeType === "Restaurant" &&
-      restaurantCount < MAX_RESTAURANTS_PER_DAY
-    ) {
+      closeAddModal();
+    } else if (placeType === "Restaurant" && restaurantCount < MAX_RESTAURANTS_PER_DAY) {
       const newItem: Item = {
         ...newDestination,
-        significance: "", // Remove significance for restaurants
+        significance: "",
         type: "Restaurant",
+        costPerDay: newDestination.costPerDay || 0, // Ensure cost is included
       };
-
+  
       const updatedDay = [...day, newItem];
       const updatedData = [...data];
-      updatedData[dayIndex] = updateItemIds(updatedDay); // Update ids
-
-      // Sort the day items after addition
-      updatedData[dayIndex] = updatedData[dayIndex].sort((a, b) => {
-        if (a.id && !b.id) return -1;
-        if (!a.id && b.id) return 1;
-        return 0;
-      });
-
+      updatedData[dayIndex] = updateItemIds(updatedDay);
+  
       setData(updatedData);
+      setAmountSpent(amountSpent + (newItem.costPerDay ?? 0)); // Update amount spent
       socket.emit("updateData", updatedData);
-      closeAddModal(); // Close the modal after adding the restaurant
+      closeAddModal();
     }
   };
-
+  
   const removeDestination = () => {
     if (currentItem?.id) {
       const updatedData = data.map((day) => {
         return day.filter((item) => item.id !== currentItem?.id);
       });
       setData(updatedData);
+      setAmountSpent(amountSpent - (currentItem.costPerDay || 0)); // Update amount spent
       socket.emit("updateData", updatedData);
       toast.success(`${currentItem?.name} removed successfully!`);
     } else {
@@ -251,6 +247,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
         return day.filter((item) => item.name !== currentItem?.name);
       });
       setData(updatedData);
+      setAmountSpent(amountSpent - (currentItem?.costPerDay || 0)); // Update amount spent
       socket.emit("updateData", updatedData);
       toast.success(`${currentItem?.name} removed successfully!`);
     }
@@ -258,18 +255,20 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   };
 
   const addHotel = (hotel: IHotels) => {
-
     setFetchedHotels(null);
     setHotel(hotel);
-    socket.emit("addHotel", { data: hotel })
-  }
-
+    const hotelCost = hotel.TotalFare || hotel.Rooms[0].TotalFare || 0;
+    setAmountSpent(amountSpent + hotelCost); // Update amount spent
+    socket.emit("addHotel", { data: hotel });
+  };
+  
   const removeHotel = () => {
-
     setFetchedHotels(null);
+    const hotelCost = hotel?.TotalFare || hotel?.Rooms[0].TotalFare || 0;
+    setAmountSpent(amountSpent - hotelCost); // Update amount spent
     setHotel(null);
-    socket.emit("removeHotel", hotel)
-  }
+    socket.emit("removeHotel", hotel);
+  };
 
   const saveChanges = () => {
     console.log(data, "data", hotel);
@@ -294,7 +293,14 @@ const Itinerary: React.FC<ItineraryProps> = () => {
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-sky-900 p-4 text-white pt-32">
       <h1 className="text-6xl font-semibold text-center mb-6">{itineraryInfo?.title} </h1>
-
+      <div className="mb-6 p-4 bg-gray-800 rounded-lg">
+  <h2 className="text-2xl font-semibold mb-2">Budget Tracking</h2>
+  <div className="flex justify-between">
+    <p className="text-lg">Total Budget: ${totalBudget}</p>
+    <p className="text-lg">Amount Spent: ${amountSpent}</p>
+    <p className="text-lg">Remaining Budget: ${totalBudget - amountSpent}</p>
+  </div>
+</div>
       <div className="z-50  top-36 right-4 fixed">
         <button
           className=" text-white py-2 px-4 rounded bg-cyan-600 transition duration-300 ease-in-out hover:bg-sky-800"
@@ -411,7 +417,7 @@ const Itinerary: React.FC<ItineraryProps> = () => {
 
       {/* Add Item Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+        <div className="fixed inset-0 flex pt-32 min-h-screen overflow-y-auto justify-center bg-gray-500 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <h2 className="text-xl font-semibold mb-4">Add New Destination</h2>
             <div className="mb-4">
@@ -547,6 +553,23 @@ const Itinerary: React.FC<ItineraryProps> = () => {
                         }
                         className="w-full p-2 bg-white text-gray-900 border border-gray-300 rounded mt-1"
                         placeholder="Enter state"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Cost Per Day
+                      </label>
+                      <input
+                        type="number"
+                        value={newDestination.costPerDay || 0}
+                        onChange={(e) =>
+                          setNewDestination({
+                            ...newDestination,
+                            costPerDay: Number(e.target.value),
+                          })
+                        }
+                        className="w-full p-2 bg-white text-gray-900 border border-gray-300 rounded mt-1"
+                        placeholder="Enter Cost Per Day"
                       />
                     </div>
                   </>

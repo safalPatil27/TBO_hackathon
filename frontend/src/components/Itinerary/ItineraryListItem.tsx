@@ -35,7 +35,7 @@ const ItineraryListItem = ({
                         <p className="text-sm text-gray-500">{item.significance}</p>
                     )}
                     {item.costPerDay && (
-                        <p className="text-sm text-gray-500">{`CostperDay ${item.costPerDay}  $`}</p>
+                        <p className="text-sm text-gray-500">{`Estimated cost: $${item.costPerDay}`}</p>
                     )}
                 </div>
                 <button

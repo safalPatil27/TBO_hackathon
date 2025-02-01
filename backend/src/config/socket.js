@@ -341,7 +341,7 @@ const socketConfig = (server) => {
             const { itinerary, itineraryId, hotels, totalFare, totalTax } = updatedData;
             console.log(itinerary, itineraryId, hotels);
             const data = await updateDestinations_to_Itinerary(itineraryId, itinerary);
-            if(hotels){
+            if(hotels.Rooms !== undefined){
                 const hotelAdd = await addHotel_to_Itinerary({
                     itineraryId,
                     HotelName: hotels.HotelName, 
