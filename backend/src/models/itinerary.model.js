@@ -34,9 +34,9 @@ const destinationSchema = new Schema({
         type: Boolean,
         required: true // Matches the "airportWithin50kmRadius" field
     },
-    Date: {
+    costPerDay: {
         type: Number,
-        required: true // Matches the "day" field
+        required: true
     },
     banner: {
         type: String,

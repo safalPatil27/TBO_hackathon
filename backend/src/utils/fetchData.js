@@ -62,6 +62,8 @@ export const getitinerary = async (itineraryId) => {
         "Itinerary ID and an array of destinations are required."
       );
     }
+
+    console.log(itinerary);
   
     // Flatten the nested array (if itinerary is a 2D array)
     const destinations = itinerary.flat();
@@ -75,10 +77,8 @@ export const getitinerary = async (itineraryId) => {
         type,
         Date,
         airportWithin50kmRadius,
-        startTime,
-        endTime,
         costPerDay,
-        image_url,
+        banner,
       } = dest;
   
       return {
@@ -90,10 +90,8 @@ export const getitinerary = async (itineraryId) => {
         type,
         Date,
         airportWithin50kmRadius,
-        startTime,
-        endTime,
         costPerDay,
-        banner: image_url,
+        banner,
       };
     });
   

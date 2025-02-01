@@ -15,7 +15,7 @@ export interface Item {
   city?: string;
   state?: string;
   type?: string; // e.g., 'temple', 'fort', 'beach'
-  distance?: number; // Distance in km (for restaurants)
+  costPerDay?: number;
   banner?: string;
 }
 export const updateItemIds = (dayItems: Item[]) => {

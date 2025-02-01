@@ -11,6 +11,7 @@ import ItineraryForm from "./pages/ItineraryForm";
 import Login from "./pages/Login";
 import Itinerary from "./components/Itinerary";
 import Dashboard from "./pages/Dashboard";
+import JoinItinerary from "./pages/JoinItinerary"
 import AuthenticatedWrapper from "./components/AuthenticatedWrapper";
 import { ToastContainer } from "react-toastify";
 import Register from "./pages/Register";
@@ -51,6 +52,7 @@ function App() {
               }
             />
             <Route path="/hotels" element={<Hotels />} />
+            <Route path="/itinerary/join-itinerary/:link" element ={<JoinItinerary/>}/>
           </Routes>
         </main>
         <Footer />

@@ -24,7 +24,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
     if (!title || !location || !days || !budget) {
         throw new ApiError(400, 'Missing required fields');
     }
-    const shareableLink = `https:////localhost:${process.env.PORT|| 5173}/api/v1/itinerary/join-itinerary/${uuidv4()}`;
+    const shareableLink = `https://localhost:${process.env.HOST|| 5173}/itinerary/join-itinerary/${uuidv4()}`;
     const newItinerary = await Itinerary.create({
         userId: req.user._id,
         title,
@@ -34,7 +34,7 @@ const create_Itinerary = asyncHandler(async (req, res) => {
         permissions: [
             {
                 userId: req.user._id,
-                access: "owner"
+                type: "owner"
             }
         ],
         budget
@@ -270,7 +270,7 @@ const addDestination_to_Itinerary = asyncHandler(async (req, res) => {
       startTime,
       endTime,
       costPerDay,
-      banner: image_url,
+      banner:image_url,
     };
   });
 
@@ -301,7 +301,7 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       "Itinerary ID and an array of destinations are required."
     );
   }
-
+  console.log("This is itinerary",itinerary);
   const destinations = itinerary.flat();
   const formattedDestinations = destinations.map((dest) => {
     const {
@@ -314,8 +314,9 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       Date,
       airportWithin50kmRadius,
       costPerDay,
-      image_url,
+      banner,
     } = dest;
+
 
     return {
       id,
@@ -327,9 +328,10 @@ const updateDestinations_to_Itinerary = asyncHandler(async (req, res) => {
       Date,
       airportWithin50kmRadius,
       costPerDay,
-      banner: image_url,
+      banner,
     };
   });
+
 
   const updatedItinerary = await Itinerary.findByIdAndUpdate(
     itineraryId,
@@ -419,9 +421,9 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 });
 
 const getitinerary_by_user = asyncHandler(async (req, res) => {
-    
-    console.log(req?.user);
-    const itinerary = await Itinerary.find({ "permission.userId": req.user._id });
+
+    const itinerary = await Itinerary.find({ "permissions.userId": req.user._id.toString() });
+    console.log(itinerary);
     if (!itinerary) {
         throw new ApiError(404, "Itinerary not found.");
     }
@@ -460,31 +462,34 @@ const delete_Itinerary = asyncHandler(async (req, res) => {
 const add_user_with_Status_Itinerary = asyncHandler(async (req, res) => {
     const user_id = req.user._id;
     const {link}  = req.params;
-
-    const itinerary = await Itinerary.findOne({ sharedLink: `https:////localhost:${process.env.HOST|| 5173}/api/v1/itinerary/join-itinerary/${link}` });
-
+    const itinerary = await Itinerary.findOne({ sharable_link: `http://localhost:${process.env.HOST || 5173}/itinerary/join-itinerary/${link}` });
+    
+    console.log(itinerary)
     if (!itinerary) {
-      return res.status(404).json({ message: "Itinerary not found!" });
+      throw new ApiError(404, "Itinerary not found.");
     }
 
-    const isUserInItinerary = itinerary.users.some(user => user.userId.toString() === userId);
+    const isUserInItinerary = itinerary.permissions.some(user => user.userId.toString() === user_id);
     if (!isUserInItinerary) {
-      itinerary.permissions.push({ user_id, access: "viewer" }); 
+      itinerary.permissions.push({ userId: user_id, access: "edit" }); 
       await itinerary.save();
+    }
+    else{
+      throw new ApiError(404, "User not found."); 
     }
 
     const user = await User.findByIdAndUpdate(
       user_id,
       { 
         $push: { 
-          itineraries: { itineraryId: itinerary._id, access: "edit" } 
+          itineraries: { itineraryId: itinerary._id, type: "edit" } 
         } 
       },
       { new: true } 
     );
     
     if(!user){
-      return res.status(404).json({ message: "User not found!" });
+      throw new ApiError(404, "Error in User-accessing");
     }
 
     return res.status(200).json(

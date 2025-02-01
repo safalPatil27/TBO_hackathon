@@ -328,7 +328,7 @@ const socketConfig = (server) => {
 
         socket.on("saveData", async (updatedData) => {
            const {itinerary, itineraryId} = updatedData;
-           console.log(itinerary, itineraryId);
+
            
             const data = await updateDestinations_to_Itinerary( itineraryId,itinerary);
             socket.broadcast.emit("savedData", data);

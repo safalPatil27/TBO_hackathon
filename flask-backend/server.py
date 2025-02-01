@@ -49,192 +49,6 @@ def get_location_image(location):
     except requests.exceptions.RequestException as e:
         return ""
 
-'''
-{
-    "sentence": "I love visiting temples and lakes, enjoying peaceful and cozy environments that help me relax and connect with nature",
-    "tag_array": [5, 2, 2, 0, 5, 0, 0, 0, 0, 0, 1],
-    "days": 3,
-    "mainLocation": "London",
-    "children": true
-}
-
-{
-  "itinerary": [
-    [
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "50$",
-        "id": 1,
-        "image_url": "https://images.unsplash.com/photo-1679357999570-44d8a39cb131?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxTdC4lMjBQYXVsJTI3cyUyMENhdGhlZHJhbCUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODE4fDA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "St. Paul's Cathedral",
-        "significance": "An iconic Anglican cathedral and a masterpiece of English Baroque architecture.",
-        "state": "England",
-        "type": "Temple"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 2,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxEaXNob29tJTIwQ292ZW50JTIwR2FyZGVuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MTl8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Dishoom Covent Garden",
-        "significance": "Famous for its classic Bombay-style dishes in a contemporary setting.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "60$",
-        "id": 3,
-        "image_url": "https://images.unsplash.com/photo-1583582306365-f9813cfee3f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxLZXclMjBHYXJkZW5zJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjB8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Kew Gardens",
-        "significance": "A UNESCO World Heritage site with stunning landscapes and botanical collections.",
-        "state": "England",
-        "type": "National Park"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 4,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxUaGUlMjBJdnklMjBDaGVsc2VhJTIwR2FyZGVuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjF8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "The Ivy Chelsea Garden",
-        "significance": "Known for its beautiful garden terrace and modern British menu.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "40$",
-        "id": 5,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxQcmltcm9zZSUyMEhpbGwlMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgyMnww&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Primrose Hill",
-        "significance": "Offers panoramic views of the London skyline and a peaceful environment.",
-        "state": "England",
-        "type": "Scenic"
-      }
-    ],
-    [
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "50$",
-        "id": 6,
-        "image_url": "https://images.unsplash.com/photo-1564426205026-6b79dba3b800?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxXZXN0bWluc3RlciUyMEFiYmV5JTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjN8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Westminster Abbey",
-        "significance": "A historic church and site of many royal coronations and weddings.",
-        "state": "England",
-        "type": "Temple"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 7,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxSdWxlcyUyMFJlc3RhdXJhbnQlMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgyNHww&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Rules Restaurant",
-        "significance": "London’s oldest restaurant serving traditional British cuisine.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "30$",
-        "id": 8,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxIeWRlJTIwUGFyayUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODI1fDA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Hyde Park",
-        "significance": "One of London’s largest and most famous parks with plenty of open space and activities.",
-        "state": "England",
-        "type": "National Park"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 9,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxCZXJuZXJzJTIwVGF2ZXJuJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4MjZ8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Berners Tavern",
-        "significance": "Lavish venue with traditional British and contemporary European dishes.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "80$",
-        "id": 10,
-        "image_url": "https://images.unsplash.com/photo-1500380804539-4e1e8c1e7118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxUb3dlciUyMG9mJTIwTG9uZG9uJTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4Mjd8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Tower of London",
-        "significance": "A historic fortress and home to the Crown Jewels.",
-        "state": "England",
-        "type": "Fort"
-      }
-    ],
-    [
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "40$",
-        "id": 11,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxCQVBTJTIwU2hyaSUyMFN3YW1pbmFyYXlhbiUyME1hbmRpciUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODI5fDA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "BAPS Shri Swaminarayan Mandir",
-        "significance": "A stunning Hindu temple built entirely from hand-carved Italian marble and Bulgarian limestone.",
-        "state": "England",
-        "type": "Temple"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 12,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxTa2V0Y2glMjBHYWxsZXJ5JTJDJTIwTG9uZG9uJTJDJTIwRW5nbGFuZHxlbnwwfHx8fDE3Mzc2NTA4Mjl8MA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Sketch Gallery",
-        "significance": "Known for its quirky interior design and indulgent afternoon tea.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "50$",
-        "id": 13,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxSaWNobW9uZCUyMFBhcmslMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgzMXww&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Richmond Park",
-        "significance": "A vast park known for its scenic beauty and free-roaming deer.",
-        "state": "England",
-        "type": "National Park"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "100$",
-        "id": 14,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxQZXRlcnNoYW0lMjBOdXJzZXJpZXMlMjBDYWYlQzMlQTklMkMlMjBMb25kb24lMkMlMjBFbmdsYW5kfGVufDB8fHx8MTczNzY1MDgzMXww&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Petersham Nurseries Café",
-        "significance": "A charming café offering a seasonal menu amidst a greenhouse setting.",
-        "state": "England",
-        "type": "Restaurant"
-      },
-      {
-        "airportWithin50kmRadius": true,
-        "city": "London",
-        "costPerDay": "30$",
-        "id": 15,
-        "image_url": "https://images.unsplash.com/photo-1448906654166-444d494666b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MDA0OTR8MHwxfHNlYXJjaHwxfHxIYW1wc3RlYWQlMjBIZWF0aCUyQyUyMExvbmRvbiUyQyUyMEVuZ2xhbmR8ZW58MHx8fHwxNzM3NjUwODMyfDA&ixlib=rb-4.0.3&q=80&w=1080",
-        "name": "Hampstead Heath",
-        "significance": "An expansive ancient heath offering sweeping views of the city from Parliament Hill.",
-        "state": "England",
-        "type": "Scenic"
-      }
-    ]
-  ],
-  "id":9
-}
-'''
 
 # Load the regressor model
 with open("regressor_model.pkl", "rb") as f:
@@ -302,7 +116,7 @@ def predict():
                 type: <place type>,
                 airportWithin50kmRadius: <True/False>,
                 significance: <one-liner about the place>,
-                costPerDay: <cost per day(travel cost(from main location) + entry fee)>
+                costPerDay: <cost per day(travel cost(from main location) + entry fee)in dollars> <type: number>
             }}
             Example:{{
                     "airportWithin50kmRadius": true,
@@ -312,7 +126,7 @@ def predict():
                     "significance": "Offers panoramic views of the London skyline and a peaceful environment.",
                     "state": "England",
                     "type": "Scenic"
-                    costPerDay: 100$
+                    costPerDay: 100
                 }}
             b. 2 objects for restaurants with the following keys:
             {{
@@ -323,7 +137,7 @@ def predict():
                 type: <place type>,
                 airportWithin50kmRadius: <True/False>,
                 significance: <one-liner about the place>,
-                costPerDay: 100$
+                costPerDay: 100
             }}
             c. you have to give the output as for day.
             [location, restaurant, location, restaurant, location] and give according to it.
@@ -396,7 +210,7 @@ def change():
                 type: <place type>,
                 airportWithin50kmRadius: <True/False>,
                 significance: <one-liner about the place >,
-                costPerDay: <cost per day(travel cost(from main location) + entry fee)>
+                costPerDay: <cost per day(travel cost(from main location) + entry fee)in dollars> <type: number>
             }}
             Example:{{
                     "airportWithin50kmRadius": true,
@@ -407,7 +221,7 @@ def change():
                     "state": "England",
                     "type": "Scenic",
                     
-                    costPerDay: 100$
+                    costPerDay: 100
             }}
             3.The final  Output should be json of just modified location. Just give json output with no other words."""
 

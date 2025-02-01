@@ -40,7 +40,12 @@ const Itinerary: React.FC<ItineraryProps> = () => {
     name: "",
     significance: "Sample significance text", // Default significance
     type: "", // For the user to choose
-    distance: 0,
+    costPerDay: 0,
+    city: "",
+    state: "",
+    airportWithin50kmRadius: true,
+    banner: "",
+
   });
   const [placeType, setPlaceType] = useState<string | "Restaurant">(
     "destination"
