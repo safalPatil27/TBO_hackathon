@@ -2,3 +2,4 @@ backend/node_modules
 archive/node_modules
 backend/.env
 flask-backend/.env
+flask-backend/myenv
