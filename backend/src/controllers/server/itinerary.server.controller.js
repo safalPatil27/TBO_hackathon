@@ -417,16 +417,27 @@ const getDestinations_by_itinerary = asyncHandler(async (req, res) => {
 });
 
 const getitinerary_by_user = asyncHandler(async (req, res) => {
+  // Fetch itineraries where the user has permissions
+  const itineraries = await Itinerary.find({ "permissions.userId": req.user._id.toString() });
 
-  console.log(req?.user);
-  const itinerary = await Itinerary.find({ "userId": req?.user._id });
-  if (!itinerary) {
+  if (itineraries.length === 0) {
     throw new ApiError(404, "Itinerary not found.");
   }
 
+  // Add access level to each itinerary
+  const updatedItineraries = itineraries.map(itinerary => {
+    const isOwner = itinerary.userId.toString() === req.user._id.toString();
+    return {
+      ...itinerary.toObject(), 
+      access: isOwner ? "owner" : "edit",
+    };
+  });
+
+  console.log(updatedItineraries);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, itinerary, "Itinerary fetched successfully."));
+    .json(new ApiResponse(200, updatedItineraries, "Itinerary fetched successfully."));
 });
 
 const delete_Itinerary = asyncHandler(async (req, res) => {

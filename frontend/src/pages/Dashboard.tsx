@@ -57,6 +57,7 @@ interface Itinerary {
   updatedAt: string;
   createdAt: string;
   sharable_link?: string;
+  access?: string
 }
 const Dashboard = () => {
   const { state, dispatch } = useAuth();
@@ -162,12 +163,17 @@ const Dashboard = () => {
                     <td className="p-3">{itinerary.createdAt}</td>
                     <td className="p-3">{itinerary.updatedAt}</td>
                     <td className="p-3">
-                    <button
-    className="text-white py-2 px-4 rounded bg-green-600 transition duration-300 ease-in-out hover:bg-green-800"
-    onClick={()=> copyLink(itinerary?.sharable_link || "")}
-  >
-    Copy Link
-  </button>
+                    {itinerary.access === "owner" ? (
+                                      <button
+                      className="text-white py-2 px-4 rounded bg-green-600 transition duration-300 ease-in-out hover:bg-green-800"
+                      onClick={()=> copyLink(itinerary?.sharable_link || "")}
+                    >
+                      Copy Link
+                    </button>
+
+                    ):(
+                      <p className="text-red-500" >Not sharable</p>
+                    )}
                        </td>
                     <td className="p-3">
                       <button
