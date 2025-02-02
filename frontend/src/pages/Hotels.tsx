@@ -5,7 +5,7 @@ import location3 from '../assets/images/location3.jpg';
 
 const Hotels = () => {
   return (
-    <div className="p-10  font-Playfair ">
+    <div className="p-10 mt-20  font-Playfair ">
       <h1 className="text-3xl md:text-4xl font-semibold text-center tracking-wider mb-6 md:mb-8">
         Know Before You Go
       </h1>

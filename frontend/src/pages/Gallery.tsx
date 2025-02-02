@@ -1,8 +1,25 @@
+import { i } from "framer-motion/client";
+import img1 from "../assets/gallery_img/gal1-min.jpg";
+import img2 from "../assets/gallery_img/gal2-min.jpg";
+import img3 from "../assets/gallery_img/gal3-min.jpg";
+import img4 from "../assets/gallery_img/gal4-min.jpg";
+import img5 from "../assets/gallery_img/gal5-min.jpg";
+import img6 from "../assets/gallery_img/gal6-min.jpg";
+import img7 from "../assets/gallery_img/gal7-min.jpg";
+import img8 from "../assets/gallery_img/gal8-min.jpg";
+import img9 from "../assets/gallery_img/gal9-min.jpg";
+import img10 from "../assets/gallery_img/gal10-min.jpg";
+import img11 from "../assets/gallery_img/gal11-min.jpg";
+import img12 from "../assets/gallery_img/gal12-min.jpg";
+
+
+
+
 
 
 const Gallery = () => {
   return (
-    <div className="p-10 grid place-content-center">
+    <div className="p-10 grid place-content-center mt-20 ">
       <h1 className="text-4xl font-semibold text-center font-Playfair tracking-wider mb-8">
         Stunning Travel Destinations
       </h1>
@@ -21,44 +38,21 @@ const Gallery = () => {
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
+              src={img1}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
+              src={img2}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="grid gap-4">
-          <div>
-            <img
-              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
+              src={img3}
               alt=""
             />
           </div>
@@ -67,21 +61,21 @@ const Gallery = () => {
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
+              src={img4}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
+              src={img5}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
+              src={img6}
               alt=""
             />
           </div>
@@ -90,21 +84,44 @@ const Gallery = () => {
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
+              src={img7}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
+              src={img8}
               alt=""
             />
           </div>
           <div>
             <img
               className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
+              src={img9}
+              alt=""
+            />
+          </div>
+        </div>
+        <div className="grid gap-4">
+          <div>
+            <img
+              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
+              src={img10}
+              alt=""
+            />
+          </div>
+          <div>
+            <img
+              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
+              src={img11}
+              alt=""
+            />
+          </div>
+          <div>
+            <img
+              className="h-auto max-w-full rounded-lg transform transition-transform duration-300 hover:scale-105"
+              src={img12}
               alt=""
             />
           </div>
