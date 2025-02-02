@@ -1,8 +1,8 @@
-import { asyncHandler } from ".../utils/asyncHandler.js";
-import {ApiError} from ".../utils/ApiError.js";
-import {Itinerary} from ".../models/itinerary.model.js";
-import {uploadOnCloudinary} from ".../utils/cloudinary.js";
-import { ApiResponse } from ".../utils/ApiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import {ApiError} from "../../utils/ApiError.js";
+import Itinerary from "../../models/itinerary.model.js";
+import {uploadOnCloudinary} from "../../utils/cloudinary.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
 
 const create_Itinerary = asyncHandler(async (req, res) => {
     const {title, location, days, budget} = req.body;
