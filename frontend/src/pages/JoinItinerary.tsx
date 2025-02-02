@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Circles } from 'react-loader-spinner';
 import { useAuth } from '../contexts/AuthUserContexts';
 import { useMutation, useQuery } from '@tanstack/react-query';
